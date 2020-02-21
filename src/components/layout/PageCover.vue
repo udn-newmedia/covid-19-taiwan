@@ -66,15 +66,20 @@ export default {
       padding-bottom: 70px;
     }
     .page-cover__cases-table__section {
+      min-width: 180px;
       padding: 0 36px;
       &:first-child {
-        border-right: solid 1px #787878;
+        border-right: solid 0.5px #787878;
+      }
+      &:last-child {
+        border-left: solid 0.5px #787878;
       }
     }
     .page-cover__cases-table__number {
       font-size: 80px;
       line-height: 0.8;
       margin-bottom: 30px;
+      text-align: center;
 
       &.page-cover__cases-table__number--case {
         color: #4eadca;
@@ -86,6 +91,7 @@ export default {
     .page-cover__cases-table__title {
       font-size: 18px;
       color: #6b6b6b;
+      text-align: center;
     }
   }
 }
