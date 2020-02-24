@@ -184,6 +184,11 @@
       })(document);
     </script>
     <!-- end typekit -->
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <noscript>
@@ -207,7 +212,32 @@
     <link rel="stylesheet" href="https://newmedia.udn.com.tw/cms_assets/nmd_loading/nmd-loading.css">
 
     <!-- content -->
-    <div id="app"></div>
+    <div id="app" v-cloak>
+      <h1>群聚感染案例增</h1>
+      <h2>圖解台灣新冠肺炎個案關係</h2>
+      <p>中國大陸武漢自2019年12月爆發新冠肺炎（COVID-19）疫情，迅速擴散中國各省及世界各國，台灣於今年1月21日出現首例女台商感染，之後有夫妻檔、家族親人相繼染病，群聚感染案例數增加。究竟群聚感染是如何發生的？</p>
+      <p>《聯合報》整理台灣新冠肺炎確診案例資料，圖解感染者之間的背景關係。<br>最後更新時間：{{updatedDate}}</p>
+      <div>
+        <p>製作人</p>
+        <p>蔡佩蓉</p>
+      </div>
+      <div>
+        <p>視覺設計</p>
+        <p>蘇士堯</p>
+      </div>
+      <div>
+        <p>網頁製作</p>
+        <p>楊若榆、胡凈悟、周融聖</p>
+      </div>
+      <div>
+        <p>製作單位</p>
+        <p>聯合報新媒體中心、<br>視覺設計中心</p>
+      </div>
+      <div>
+        <p>監製</p>
+        <p>聯合報新聞部</p>
+      </div>
+    </div>
     <script type="application/ld+json">
       {
         "@context": "http://schema.org",
