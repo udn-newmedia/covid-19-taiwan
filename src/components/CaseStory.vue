@@ -3,7 +3,6 @@
     <div :class="{
         'case-story__chart': true,
         'case-story__chart--bottom': bottomFlag,
-        'case-story__chart--top': topFlag,
         'case-story__chart--fixed': fixedFlag,
       }"
     >
@@ -58,23 +57,14 @@ export default {
     handleScroll() {
       if (!this.ticking) {
         window.requestAnimationFrame(() => {
-          this.$store.dispatch('updateKey');
-
           const pos =  this.$el.getBoundingClientRect();
           const top = pos.top;
           const bottom = pos.bottom -  window.innerHeight;
-          if (top > 0 && bottom > 0) {
+          if (top <= 0 && bottom < 0) {
             /* above map */
-            this.topFlag = true;
-            this.bottomFlag = false;
-            this.resetChart();
-          } else if (top <= 0 && bottom < 0) {
-            /* under map */
-            this.topFlag = false;
             this.bottomFlag = true;
             this.resetChart();
           } else {
-            this.topFlag = false;
             this.bottomFlag = false;
           }
 
@@ -109,13 +99,10 @@ export default {
   position: absolute;
   pointer-events: none;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100vh;
   margin: auto;
-  &.case-story__chart--top {
-    top: 0;
-    bottom: auto;
-  }
   &.case-story__chart--bottom {
     top: auto;
     bottom: 0;

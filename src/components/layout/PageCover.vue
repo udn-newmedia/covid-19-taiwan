@@ -48,12 +48,12 @@ export default {
   background-size: cover;
   background-position: center;
   margin-bottom: 48px;
-  @include pad {
-    margin-bottom: 0;
-  }
-  @include pc {
-    margin-bottom: 0;
-  }
+  // @include pad {
+  //   margin-bottom: 0;
+  // }
+  // @include pc {
+  //   margin-bottom: 0;
+  // }
   .page-cover__cases-table {
     position: absolute;
     bottom: 0;
@@ -63,7 +63,7 @@ export default {
     padding-bottom: 50px;
     transform: translateX(-50%);
     @include pc {
-      padding-bottom: 70px;
+      padding-bottom: 40px;
     }
     .page-cover__cases-table__section {
       min-width: 180px;

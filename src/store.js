@@ -290,18 +290,18 @@ export default new Vuex.Store({
       state.updateKey++;
     },
     updateCaseDead (state, payload) {
-      state.caseData.cases[payload].dead = true;
+      if (!state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = true;
     },
     updateCaseDeadDisable (state, payload) {
-      state.caseData.cases[payload].dead = false;
+      if (state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = false;
     },
     updateCaseActive (state, payload) {
       payload.forEach(e => {
-        state.caseData.cases[e].active = true;
+        if (!state.caseData.cases[e].active) state.caseData.cases[e].active = true;
       });
     },
     updateCaseDisable (state, payload) {
-      state.caseData.cases[payload].active = false;
+      if (state.caseData.cases[payload].active) state.caseData.cases[payload].active = false;
     },
     updateSlideIndex (state, payload) {
       state.currentSlideIndex = payload;

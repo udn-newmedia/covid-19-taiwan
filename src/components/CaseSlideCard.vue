@@ -74,15 +74,21 @@ export default {
             const bottom = pos.bottom
             
             if (top <= 0 && bottom > 0) {
-              this.$store.dispatch('updateSlideIndex', this.data.index)
-  
-              for (let i = 0; i < this.$store.state.caseDataLength; i++) {
-                this.$store.dispatch('updateCaseDisable', i + 1);
-                this.$store.dispatch('updateCaseDeadDisable', i + 1);
+
+              if (this.$store.state.currentSlideIndex !== this.data.index) {
+                this.$store.dispatch('updateSlideIndex', this.data.index);
+                this.$store.dispatch('updateKey');             
               }
   
               const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
-              this.$store.dispatch('updateCaseActive', eventCases);
+              for (let i = 0; i < this.$store.state.caseDataLength; i++) {
+                // 改到這裡
+                if (!eventCases.includes(i.toString())) {
+                  this.$store.dispatch('updateCaseDisable', i + 1);
+                  this.$store.dispatch('updateCaseDeadDisable', i + 1);
+                }
+              }
+              this.$store.dispatch('updateCaseActive', eventCases);              
             }
           }
 
