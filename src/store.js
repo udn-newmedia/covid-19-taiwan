@@ -270,7 +270,7 @@ export default new Vuex.Store({
         
         for (let i = 0; i < state.caseDataLength; i++) {
           state.caseData.cases[i + 1].active = true;
-          state.caseData.cases[i + 1].dead = false;
+          // state.caseData.cases[i + 1].dead = false;
         }
 
         // diamond
@@ -279,7 +279,7 @@ export default new Vuex.Store({
         
         for (let i = 0; i < state.diamondDataLength; i++) {
           state.caseData.diamond[i + 1].active = false;
-          state.caseData.diamond[i + 1].dead = false;
+          // state.caseData.diamond[i + 1].dead = false;
         }
       })
       .catch(error => {
@@ -289,12 +289,12 @@ export default new Vuex.Store({
     updateKey (state) {
       state.updateKey++;
     },
-    updateCaseDead (state, payload) {
-      if (!state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = true;
-    },
-    updateCaseDeadDisable (state, payload) {
-      if (state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = false;
-    },
+    // updateCaseDead (state, payload) {
+    //   if (!state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = true;
+    // },
+    // updateCaseDeadDisable (state, payload) {
+    //   if (state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = false;
+    // },
     updateCaseActive (state, payload) {
       payload.forEach(e => {
         if (!state.caseData.cases[e].active) state.caseData.cases[e].active = true;
@@ -314,12 +314,12 @@ export default new Vuex.Store({
     updateKey (context, payload) {
       context.commit('updateKey');
     },
-    updateCaseDead (context, payload) {
-      context.commit('updateCaseDead', payload);
-    },
-    updateCaseDeadDisable (context, payload) {
-      context.commit('updateCaseDeadDisable', payload);
-    },
+    // updateCaseDead (context, payload) {
+    //   context.commit('updateCaseDead', payload);
+    // },
+    // updateCaseDeadDisable (context, payload) {
+    //   context.commit('updateCaseDeadDisable', payload);
+    // },
     updateCaseActive (context, payload) {
       context.commit('updateCaseActive', payload);
     },

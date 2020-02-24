@@ -12,7 +12,7 @@
         data-share="true"
       />
     </div>
-    <div class="footer-share__share-line" @click="sendGA(formatGA('ShareLineFooter'))">
+    <div class="footer-share__share-line" @click="sendGA(formatGA('FooterShareLine'))">
       <a
         :href="shareLineUrl"
         :target="target"
@@ -30,8 +30,11 @@
       </a>
     </div>
     <div class="footer-share__share-twitter">
-      <a :href="shareTwitterUrl"
+      <a 
+        href="https://twitter.com/intent/tweet"
         class="twitter-share-button"
+        :dataText="shareDescription"
+        data-url="https://udn.com/newmedia/2020/covid-19-taiwan/"
         data-show-count="false"
         aria-label="share-twiier"
         name="share-twiier"
@@ -44,10 +47,12 @@
 
 <script>
 import Utils from '@/utils/udn-newmedia-utils';
+import { sendGaMethods } from '@/mixins/masterBuilder.js';
 const isMobile = Utils.detectMob();
 const isInApp = Utils.isFacebookApp(148) || Utils.isLineApp();
 export default {
   name: 'FooterShare',
+  mixins: [sendGaMethods],
   props: {
     href: {
       type: String,
@@ -55,8 +60,8 @@ export default {
     },
   },
   computed: {
-    shareTwitterUrl() {
-      return `https://twitter.com/intent/tweet?text=${encodeURIComponent(document.querySelector('meta[property="og:description"]').content)}%0D%0A%0D%0A`;
+    shareDescription() {
+      return document.querySelector('meta[property="og:description"]').content;
     },
     shareLineUrl() {
       const sharedText = document.querySelector('title').innerHTML

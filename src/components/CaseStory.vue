@@ -1,5 +1,5 @@
 <template>
-  <div class="case-story">
+  <div v-if="$store.state.caseData !== null" class="case-story">
     <div :class="{
         'case-story__chart': true,
         'case-story__chart--bottom': bottomFlag,
@@ -8,7 +8,6 @@
     >
       <CaseProgress :key="$store.state.updateKey" :data="$store.state.caseData" />
     </div>
-    <CaseSlideCard :data="intro" />
     <CaseSlideCard
       v-for="(item, index) in storyOccurence"
       :key="index"
@@ -16,6 +15,7 @@
     />
     <CaseSlideCard />
   </div>
+  <div v-else class="case-story-loading" />
 </template>
 
 <script>
@@ -36,7 +36,7 @@ export default {
       intro: {
         index: 0,
         case: '',
-        evnet_1: '截至2月19日，台灣境內新冠肺炎確診共24例，有16例為境外移入，8例為本土病例。另外，停靠日本橫濱的「鑽石公主號」上，有5名台灣乘客確診。',
+        evnet_1: '截至2月24日，台灣境內新冠肺炎確診共28例，有16例為境外移入，12例為本土病例。另外，停靠日本橫濱的「鑽石公主號」上，有5名台灣乘客確診。',
         evnet_2: '-',
       },
     };
@@ -63,10 +63,16 @@ export default {
           if (top <= 0 && bottom < 0) {
             /* above map */
             this.bottomFlag = true;
-            this.resetChart();
           } else {
             this.bottomFlag = false;
+            if (top > 0) {
+              if (this.$store.state.currentSlideIndex !== 1) {
+                this.$store.dispatch('updateSlideIndex', 1);
+                this.$store.dispatch('updateKey');
+              }
+            }
           }
+          this.resetChart();
 
           if (top <= 0 && bottom > 0) {
             this.fixedFlag = true;
@@ -94,7 +100,20 @@ export default {
   position: relative;
   width: 100%;
 }
-
+.case-story-loading {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4eadca;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  animation: spin 1s linear infinite;
+  margin: 30vh auto;
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}
 .case-story__chart {
   position: absolute;
   pointer-events: none;
@@ -111,12 +130,12 @@ export default {
     position: fixed;
     top: 0;
     padding: 0 16px;
-  @include pad {
-    padding: 0 calc(50% - 288px);
-  }
-  @include pc {
-    padding: 0 calc(50% - 360px);
-  }
+    @include pad {
+      padding: 0 calc(50% - 288px);
+    }
+    @include pc {
+      padding: 0 calc(50% - 360px);
+    }
   }
 }
 </style>

@@ -4,7 +4,10 @@
       backgroundImage: 'url(' + selectSrc_3(srcMob, srcPad, srcPc) + ')'
     }"
   >
-    <div class="page-cover__cases-table">
+    <div v-if="!$store.state.caseData" class="page-cover__cases-table page-cover__cases-table--loading">
+      <div class="page-cover__loading" />
+    </div>
+    <div v-else class="page-cover__cases-table">
       <div class="page-cover__cases-table__section">
         <div class="page-cover__cases-table__number page-cover__cases-table__number--case">{{$store.state.caseDataLength}}</div>
         <div class="page-cover__cases-table__title">台灣確診數</div>
@@ -54,16 +57,33 @@ export default {
   // @include pc {
   //   margin-bottom: 0;
   // }
+  .page-cover__loading {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4eadca;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    animation: spin 1s linear infinite;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  }
   .page-cover__cases-table {
     position: absolute;
     bottom: 0;
     left: 50%;
     display: flex;
     margin: 0 auto;
-    padding-bottom: 50px;
+    padding-bottom: 36px;
     transform: translateX(-50%);
     @include pc {
       padding-bottom: 40px;
+    }
+
+    &.page-cover__cases-table--loading {
+      bottom: 10%;
     }
     .page-cover__cases-table__section {
       min-width: 180px;

@@ -22,7 +22,7 @@
             'schechule-diagram__item--overseas': item.active && item.from === '境外移入',
             'schechule-diagram__item--dead': item.dead,
           }"
-          :id="'schechule-diagram__item' + (index + 1)"
+          :id="'schechule-diagram__item-' + (index + 1)"
         >
           <div class="schechule-diagram__item__date">{{item.date}}</div>
           <div class="schechule-diagram__item__number">{{item.index}}</div>
@@ -30,16 +30,13 @@
       </div>
     </div>
     <div class="case-progress__table">
-      <h3>鑽石公主號<span style="font-size: 40px">{{$store.state.diamondDataLength}}</span>例</h3>
+      <h3>鑽石公主號<span style="font-size: 40px">{{$store.state.diamondDataLength}}</span>例<span style="font-size: 18px; font-weight: normal"> (境外感染)</span></h3>
       <div class="schechule-diagram">
         <div
           v-for="(item, index) in dataDiamond" :key="index"
           :class="{
             'schechule-diagram__item': true,
-            'schechule-diagram__item--disabled': item.active === false,
-            'schechule-diagram__item--local': item.active && item.from === '本土案例',
-            'schechule-diagram__item--overseas': item.active && item.from === '境外移入',
-            'schechule-diagram__item--dead': item.dead,
+            'schechule-diagram__item--diamond': true,
           }"
           :id="'schechule-diagram__item' + (index + 1)"
         >
@@ -50,11 +47,11 @@
     </div>
     <div class="case-progress__svg-container">
       <svg id="case-progress-svg" width="100%" height="100%"
-        viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg" 
         version="1.1"  
-        preserveAspectRatio="none"
-      />
+      >
+        <g id="line-group"></g>
+      </svg>
     </div>
   </div>
 </template>
@@ -79,7 +76,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~/style/_mixins.scss';
 .case-progress {
   position: relative;
@@ -138,8 +135,10 @@ export default {
     margin-bottom: 40px;
     border-radius: 50%;
     font-size: 12px;
-    transition: .666s ease-in-out;
     @include pc {
+      width: calc(10% - 14px);
+      padding: calc(5% - 7px) 0;
+      margin-right: 14px;
       font-size: 14px;
     }
 
@@ -154,6 +153,9 @@ export default {
     }
     &.schechule-diagram__item--disabled {
       background-color: #efefef;
+    }
+    &.schechule-diagram__item--diamond {
+      background-color: #e8decf;
     }
 
     .schechule-diagram__item__date {
@@ -171,13 +173,22 @@ export default {
 
 .case-progress__svg-container {
   position: absolute;
+  z-index: 99999;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
 
   svg {
-    
+    .case-line {
+      stroke-width: 1px;
+    }
+    .case-line--overseas {
+      stroke: #4eadca;
+    }
+    .case-line--local {
+      stroke: #e8ef23;
+    }
   }
 }
 </style>

@@ -2,6 +2,7 @@
   <div class="case-slide-card">
     <div
       v-if="data"
+      :id="'case-slide-card-' + data.index"
       :class="{
           'case-slide-card__content': true,
           'case-slide-card__content--type-local': eventType_1 === 'local',
@@ -24,8 +25,12 @@
 </template>
 
 <script>
+import * as d3 from 'd3';
+import { autoResize_3 } from '@/mixins/masterBuilder.js';
+
 export default {
   name: 'CaseSlideCard',
+  mixins: [autoResize_3],
   props: {
     data: {
       type: Object,
@@ -39,6 +44,8 @@ export default {
   },
   computed: {
     eventType_1() {
+      if (this.data.index === 1) return false;
+
       const _case = this.data.case.split(',');
       if (_case[0]) {
         if (this.$store.state.caseData.cases[_case[0]].from === '境外移入') return 'overseas';
@@ -47,16 +54,14 @@ export default {
       return false;
     },
     eventType_2() {
+      if (this.data.index === 1) return false;
+
       if (this.data.evnet_2 === '-') {
         return false;
       } else { 
-        const cases = Object.values(this.$store.state.caseData.cases);        
-        cases.forEach(e => {
-          if (e.from === '本土案例') {
-            return 'local';
-          }
-        });
-        return 'overseas';
+        if (this.eventType_1 === 'overseas') return 'local';
+        if (this.eventType_1 === 'local') return 'overseas';
+        return false;
       } 
     },
   },
@@ -68,34 +73,96 @@ export default {
     handleScroll() {
       if (!this.ticking) {
         window.requestAnimationFrame(() => {
-          if (this.data.index !== 0) {
+          if (this.data.index !== 1) {
             const pos = this.$el.getBoundingClientRect();
             const top = pos.top;
             const bottom = pos.bottom
-            
             if (top <= 0 && bottom > 0) {
+              this.handleDrawLine();
+              this.handleUpdateLine();
 
               if (this.$store.state.currentSlideIndex !== this.data.index) {
                 this.$store.dispatch('updateSlideIndex', this.data.index);
-                this.$store.dispatch('updateKey');             
+                this.$store.dispatch('updateKey');
+                this.handleCleanLine();
               }
   
               const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
               for (let i = 0; i < this.$store.state.caseDataLength; i++) {
-                // 改到這裡
-                if (!eventCases.includes(i.toString())) {
+                if (!eventCases.includes((i + 1).toString())) {
                   this.$store.dispatch('updateCaseDisable', i + 1);
-                  this.$store.dispatch('updateCaseDeadDisable', i + 1);
+                  // this.$store.dispatch('updateCaseDeadDisable', i + 1);
                 }
               }
+              
               this.$store.dispatch('updateCaseActive', eventCases);              
             }
+          } else {
+            this.handleCleanLine();
           }
 
           this.ticking = false;
         });
       }
       this.ticking = true;
+    },
+    handleDrawLine() {
+      const g = d3.select('#case-progress-svg').select('#line-group');
+      const itemList = this.data.case.split(',');
+      itemList.forEach((e, i) => {
+        g.append('line')
+          .attr('id', 'case-line-' + i)
+          .attr('class', 'case-line')
+      });
+
+    },
+    handleCleanLine() {
+      const g = d3.select('#case-progress-svg').select('#line-group');
+      g.selectAll('.case-line').remove();
+    },
+    handleUpdateLine() {
+      const card = document.getElementById('case-slide-card-' + this.data.index);
+      const g = d3.select('#case-progress-svg').select('#line-group');
+
+      if (card) {
+        const cardPos = card.getBoundingClientRect();
+        const itemList = this.data.case.split(',');
+
+        itemList.forEach((e, i) => {
+          const circlePos = document.getElementById('schechule-diagram__item-' + e).getBoundingClientRect();
+          let circlePosLeft = 0;
+          let circlePosTop = 0;
+          if (this.deviceType === 'mob') {
+            circlePosLeft = circlePos.left;
+            circlePosTop = circlePos.top + 15;
+          }
+          if (this.deviceType === 'pad') {
+            circlePosLeft = circlePos.left - ((window.innerWidth - 576) * 0.5) + 25;
+            circlePosTop = circlePos.top + 25;
+          }
+          if (this.deviceType === 'pc') {
+            circlePosLeft = circlePos.left - ((window.innerWidth - 720) * 0.5) + 36;
+            circlePosTop = circlePos.top + 32;
+          }
+
+          if (this.$store.state.caseData.cases[e].from === '本土案例') {
+            g.select('#case-line-' + i)
+              .attr('class', 'case-line case-line--local')
+              .attr('x1', circlePosLeft)
+              .attr('y1', circlePosTop)
+              .attr('x2', '50%')
+              .attr('y2', cardPos.top);
+          }
+          if (this.$store.state.caseData.cases[e].from === '境外移入') {
+            g.select('#case-line-' + i)
+              .attr('class', 'case-line case-line--overseas')
+              .attr('x1', circlePosLeft)
+              .attr('y1', circlePosTop)
+              .attr('x2', '50%')
+              .attr('y2', cardPos.top);
+          }
+        });
+      }
     },
   },
   mounted() {
@@ -117,7 +184,6 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
   align-content: center;
-  // border: solid red 1px;
 
   .case-slide-card__content {
     position: relative;
@@ -126,6 +192,7 @@ export default {
     margin: 0 auto;
     background-color: #efefef;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    white-space: pre-line;
     @include pc {
       width: 600px;
       padding: 20px 45px;
