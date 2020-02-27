@@ -51,6 +51,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 120px;
+  @include pc {
+    margin-top: 200px;
+  }
   h3 {
     @include pad {
       text-align: center;
