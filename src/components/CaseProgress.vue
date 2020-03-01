@@ -30,7 +30,8 @@
       </div>
     </div>
     <div class="case-progress__table">
-      <h3>鑽石公主號<span style="font-size: 40px">{{$store.state.diamondDataLength}}</span>例<span style="font-size: 18px; font-weight: normal"> (境外感染)</span></h3>
+      <h3>鑽石公主號<span style="font-size: 40px">{{$store.state.diamondDataLength}}</span>例</h3>
+      <p style="font-size: 18px; font-weight: normal"> (原5例境外感染，其中1例返台確診納入第40例)</p>
       <div class="schechule-diagram">
         <div
           v-for="(item, index) in dataDiamond" :key="index"
@@ -40,7 +41,7 @@
           }"
           :id="'schechule-diagram__item' + (index + 1)"
         >
-          <div class="schechule-diagram__item__date">{{item.date}}</div>
+          <!-- <div class="schechule-diagram__item__date">{{item.date}}</div> -->
           <div class="schechule-diagram__item__number">{{item.index}}</div>
         </div>
       </div>
@@ -86,13 +87,23 @@ export default {
 }
 .case-progress__table {
   overflow: hidden;
+  h3, p {
+    margin-bottom: 0 !important;
+    line-height: 1.3;
+  }
+  p {
+    font-size: 15px !important;
+    @include smob {
+      font-size: 12px !important;
+    }
+  }
 }
 .table-lagend-container {
   position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 36px;
+  margin-bottom: 20px;
   .table-lagend {
     position: relative;
     display: flex;
@@ -132,7 +143,7 @@ export default {
     align-items: center;
     padding: calc(5% - 4px) 0;
     margin-right: 8px;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
     border-radius: 50%;
     font-size: 12px;
     @include pc {

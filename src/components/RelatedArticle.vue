@@ -18,6 +18,7 @@
         <p v-for="(t, i) in handleTitle(item.title)" :key="i">
           {{t}}
         </p>
+        <i class="arrow right"></i>
       </button>
     </a>
   </div>
@@ -68,6 +69,7 @@ export default {
 }
 .related-article__button {
   @include clean-btn;
+  position: relative;
   width: 100%;
   height: 100px;
   font-size: 18px;
@@ -91,6 +93,20 @@ export default {
 
   p {
     margin: 0;
+  }
+  i {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    border: solid #6b6b6b;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: translateY(-50%);
+  }
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
   }
 }
 .related-article-loading {

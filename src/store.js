@@ -4,6 +4,9 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
+// const url = 'https://newmedia.udn.com.tw/active/Covid19/Covid19Data';
+const url = './data/Covid19Data.json';
+
 export default new Vuex.Store({
   state: {
     updateKey: 0,
@@ -260,7 +263,7 @@ export default new Vuex.Store({
   },
   mutations: {
     getData(state) {
-      axios.get('https://newmedia.udn.com.tw/active/Covid19/Covid19Data')
+      axios.get(url)
       .then(res => {
         state.caseData = { ...res.data };
 
