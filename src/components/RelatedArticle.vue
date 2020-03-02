@@ -15,7 +15,11 @@
         aria-label="share"
         name="share-twitter"
       >
-        <p v-for="(t, i) in handleTitle(item.title)" :key="i">
+        <p
+          v-for="(t, i) in handleTitle(item.title)"
+          :key="i"
+          class="small"
+        >
           {{t}}
         </p>
         <i class="arrow right"></i>
