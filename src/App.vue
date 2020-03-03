@@ -51,22 +51,19 @@
 </template>
 
 <script>
+import InApp from 'detect-inapp';
 
 import CaseStory from '@/components/CaseStory.vue';
-
 import HeaderTypeA from '@/components/header/HeaderTypeA.vue';
 import ArticleContainer from '@/components/layout/ArticleContainer.vue';
-
 import FooterEditor from '@/components/footer/FooterEditor.vue';
 import FooterFbComment from '@/components/footer/FooterFbComment.vue';
 import FooterLogo from '@/components/footer/FooterLogo.vue';
 import FooterShare from '@/components/footer/FooterShare.vue';
 import PageFooter from '@/components/footer/PageFooter.vue';
-
 import PageBackTop from '@/components/layout/PageBackTop.vue';
 import PageCover from '@/components/layout/PageCover.vue';
 import PageIndicator from '@/components/layout/PageIndicator.vue';
-
 import RelatedArticle from '@/components/RelatedArticle.vue';
 
 export default {
@@ -92,6 +89,23 @@ export default {
     }
   },
   mounted() {
+    (function() {
+      const inapp = new InApp(navigator.userAgent || navigator.vendor || window.opera);
+      let currentWidth = window.innerWidth;
+      let executeCount = 0;
+      if (inapp.isInApp) {
+        const inappWidthListener = setInterval(() => {
+          executeCount++;
+          if (window.innerWidth !== currentWidth) {
+            window.location.reload();
+            currentWidth = window.innerWidth;
+          }
+          if (executeCount > 10) {
+            clearInterval(inappWidthListener);
+          }
+        }, 100);
+      }
+    })();
     this.$store.dispatch('getData');
   },
 }

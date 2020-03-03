@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 // const url = 'https://newmedia.udn.com.tw/active/Covid19/Covid19Data';
 // const url = './data/Covid19Data.json';
-const cors = 'https://cors-anywhere.herokuapp.com/';
+// const cors = 'https://cors-anywhere.herokuapp.com/';
 const url = 'https://udn.com/newmedia/2020/covid-19-taiwan/data/Covid19Data_static.json';
 
 export default new Vuex.Store({
