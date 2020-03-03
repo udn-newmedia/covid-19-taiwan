@@ -1,7 +1,7 @@
 <template>
   <div class="case-progress">
     <div class="case-progress__table">
-      <h3>台灣境內確診<span style="font-size: 40px">{{$store.state.caseDataLength}}</span>例</h3>
+      <h3>台灣境內確診<span class="case-progress__table__digit">{{$store.state.caseDataLength}}</span>例</h3>
       <div class="table-lagend-container">
         <div class="table-lagend">
           <div class="table-lagend__color table-lagend__color--overseas" />
@@ -20,9 +20,9 @@
             'schechule-diagram__item--disabled': item.active === false,
             'schechule-diagram__item--local': item.active && item.from === '本土案例',
             'schechule-diagram__item--overseas': item.active && item.from === '境外移入',
-            'schechule-diagram__item--dead': item.dead,
           }"
           :id="'schechule-diagram__item-' + (index + 1)"
+          @click="handleCircleClick(index + 1)"
         >
           <div class="schechule-diagram__item__date">{{item.date}}</div>
           <div class="schechule-diagram__item__number">{{item.index}}</div>
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="case-progress__table">
-      <h3>鑽石公主號<span style="font-size: 40px">{{$store.state.diamondDataLength}}</span>例</h3>
+      <h3>鑽石公主號<span class="case-progress__table__digit">{{$store.state.diamondDataLength}}</span>例</h3>
       <p style="font-size: 18px; font-weight: normal"> (原5例境外感染，其中1例返台確診納入第40例)</p>
       <div class="schechule-diagram">
         <div
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import vueScrollTo from 'vue-scrollto';
+
 export default {
   name: 'CaseProgress',
   props: {
@@ -72,6 +74,18 @@ export default {
     },
     dataDiamond() {
       return Object.values(this.data.diamond);
+    }
+  },
+  methods: {
+    handleCircleClick(index) {
+      const occurance = Object.values({...this.data.occurance});
+      occurance.forEach((e, j) => {
+        if (j > 1) {
+          if (e.case.split(',').includes(index.toString())) {
+            vueScrollTo.scrollTo('#case-slide-card-' + (j + 1));
+          }
+        }
+      })
     }
   },
 }
@@ -96,6 +110,10 @@ export default {
     @include smob {
       font-size: 12px !important;
     }
+  }
+  .case-progress__table__digit {
+    font-size: 40px;
+    margin: 0 4px;
   }
 }
 .table-lagend-container {
@@ -146,6 +164,8 @@ export default {
     margin-bottom: 36px;
     border-radius: 50%;
     font-size: 12px;
+    cursor: pointer;
+    @include clean-tap;
     @include pc {
       width: calc(10% - 14px);
       padding: calc(5% - 7px) 0;
@@ -167,6 +187,7 @@ export default {
     }
     &.schechule-diagram__item--diamond {
       background-color: #e8decf;
+      cursor: initial;
     }
 
     .schechule-diagram__item__date {
@@ -184,6 +205,7 @@ export default {
 
 .case-progress__svg-container {
   position: absolute;
+  pointer-events: none;
   z-index: 99999;
   top: 0;
   left: 0;

@@ -177,6 +177,7 @@ export default {
 <style lang="scss" scoped>
 @import '~/style/_mixins.scss';
 .case-slide-card {
+  pointer-events: none;
   position: relative;
   width: 100%;
   height: 100vh;

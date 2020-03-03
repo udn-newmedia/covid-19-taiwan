@@ -116,7 +116,6 @@ export default {
 }
 .case-story__chart {
   position: absolute;
-  pointer-events: none;
   left: 0;
   top: 0;
   width: 100%;

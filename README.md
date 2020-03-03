@@ -1,5 +1,11 @@
 # ncp_cases_progress
 
+
+## data
+```
+localhost靜態檔案 './data/Covid19Data.json'
+```
+
 ## Project setup
 ```
 npm install
