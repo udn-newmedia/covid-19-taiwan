@@ -56,7 +56,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 120px;
+  margin-top: 300px;
   @include pc {
     margin-top: 200px;
   }

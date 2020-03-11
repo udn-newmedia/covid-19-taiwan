@@ -4,10 +4,9 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
-// const url = 'https://newmedia.udn.com.tw/active/Covid19/Covid19Data';
 // const url = './data/Covid19Data.json';
-// const cors = 'https://cors-anywhere.herokuapp.com/';
-const url = 'https://udn.com/newmedia/2020/covid-19-taiwan/data/Covid19Data_static.json';
+// const url = 'https://udn.com/newmedia/2020/covid-19-taiwan/data/Covid19Data_static.json';
+const url = './data/Covid19Data_static.json';
 
 export default new Vuex.Store({
   state: {
@@ -266,7 +265,6 @@ export default new Vuex.Store({
   mutations: {
     getData(state) {
       axios.get(url)
-      // axios.get(`${cors}${url}`)
       .then(res => {
         state.caseData = { ...res.data };
 
@@ -276,7 +274,6 @@ export default new Vuex.Store({
         
         for (let i = 0; i < state.caseDataLength; i++) {
           state.caseData.cases[i + 1].active = true;
-          // state.caseData.cases[i + 1].dead = false;
         }
 
         // diamond
@@ -285,7 +282,6 @@ export default new Vuex.Store({
         
         for (let i = 0; i < state.diamondDataLength; i++) {
           state.caseData.diamond[i + 1].active = false;
-          // state.caseData.diamond[i + 1].dead = false;
         }
       })
       .catch(error => {
@@ -295,12 +291,6 @@ export default new Vuex.Store({
     updateKey (state) {
       state.updateKey++;
     },
-    // updateCaseDead (state, payload) {
-    //   if (!state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = true;
-    // },
-    // updateCaseDeadDisable (state, payload) {
-    //   if (state.caseData.cases[payload].dead) state.caseData.cases[payload].dead = false;
-    // },
     updateCaseActive (state, payload) {
       payload.forEach(e => {
         if (!state.caseData.cases[e].active) state.caseData.cases[e].active = true;
@@ -317,15 +307,9 @@ export default new Vuex.Store({
     getData (context) {
       context.commit('getData');
     },
-    updateKey (context, payload) {
+    updateKey (context) {
       context.commit('updateKey');
     },
-    // updateCaseDead (context, payload) {
-    //   context.commit('updateCaseDead', payload);
-    // },
-    // updateCaseDeadDisable (context, payload) {
-    //   context.commit('updateCaseDeadDisable', payload);
-    // },
     updateCaseActive (context, payload) {
       context.commit('updateCaseActive', payload);
     },

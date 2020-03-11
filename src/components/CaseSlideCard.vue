@@ -77,7 +77,7 @@ export default {
             const pos = this.$el.getBoundingClientRect();
             const top = pos.top;
             const bottom = pos.bottom
-            if (top <= 0 && bottom > 0) {
+            if (top <= window.innerHeight * 0.25 && bottom > window.innerHeight * 0.25) {
               this.handleDrawLine();
               this.handleUpdateLine();
 
@@ -180,11 +180,12 @@ export default {
   pointer-events: none;
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 135vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-content: center;
+  padding-bottom: 25vh;
 
   .case-slide-card__content {
     position: relative;

@@ -2,6 +2,7 @@
   <div class="case-progress">
     <div class="case-progress__table">
       <h3>台灣境內確診<span class="case-progress__table__digit">{{$store.state.caseDataLength}}</span>例</h3>
+      <p style="font-size: 18px; font-weight: normal"> (*點按病例看說明)</p>
       <div class="table-lagend-container">
         <div class="table-lagend">
           <div class="table-lagend__color table-lagend__color--overseas" />
@@ -60,6 +61,8 @@
 <script>
 import vueScrollTo from 'vue-scrollto';
 
+const firstWuhan = [2, 3, 4, 6, 7, 11, 12, 13];
+
 export default {
   name: 'CaseProgress',
   props: {
@@ -79,7 +82,13 @@ export default {
   methods: {
     handleCircleClick(index) {
       const occurance = Object.values({...this.data.occurance});
+        
+      if (firstWuhan.includes(index)) {
+        vueScrollTo.scrollTo('#case-slide-card-' + 2);
+      }  
+
       occurance.forEach((e, j) => {
+        
         if (j > 1) {
           if (e.case.split(',').includes(index.toString())) {
             vueScrollTo.scrollTo('#case-slide-card-' + (j + 1));
@@ -101,6 +110,7 @@ export default {
 }
 .case-progress__table {
   overflow: hidden;
+  height: 100%;
   h3, p {
     margin-bottom: 0 !important;
     line-height: 1.3;
@@ -121,7 +131,7 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 20px 0;
   .table-lagend {
     position: relative;
     display: flex;
