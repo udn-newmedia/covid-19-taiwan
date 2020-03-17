@@ -33,18 +33,12 @@ export default {
       fixedFlag: false,
       topFlag: false,
       bottomFlag: false,
-      intro: {
-        index: 0,
-        case: '',
-        evnet_1: '截至2月24日，台灣境內新冠肺炎確診共28例，有16例為境外移入，12例為本土病例。另外，停靠日本橫濱的「鑽石公主號」上，有5名台灣乘客確診。',
-        evnet_2: '-',
-      },
     };
   },
   computed: {
     storyOccurence() {
       return Object.values(this.$store.state.caseData.occurance);
-    },
+    }
   },
   methods: {
     resetChart() {
@@ -75,9 +69,9 @@ export default {
           this.resetChart();
 
           if (top <= 0 && bottom > 0) {
-            this.fixedFlag = true;
+            if (!this.fixedFlag) this.fixedFlag = true;
           } else {
-            this.fixedFlag = false;
+            if (this.fixedFlag) this.fixedFlag = false;
           }
           this.ticking = false;
         });
@@ -120,7 +114,7 @@ export default {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   margin: auto;
   &.case-story__chart--bottom {
     top: auto;

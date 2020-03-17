@@ -14,7 +14,6 @@
       <CaseStory />
       <RelatedArticle />
     </ArticleContainer>
-
     <PageFooter>
       <FooterEditor>
         <div>

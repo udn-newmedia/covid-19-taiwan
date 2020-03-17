@@ -91,7 +91,6 @@ export default {
               for (let i = 0; i < this.$store.state.caseDataLength; i++) {
                 if (!eventCases.includes((i + 1).toString())) {
                   this.$store.dispatch('updateCaseDisable', i + 1);
-                  // this.$store.dispatch('updateCaseDeadDisable', i + 1);
                 }
               }
               
