@@ -99,6 +99,7 @@ export default {
 .case-story {
   position: relative;
   width: 100%;
+  margin-top: 64px;
 }
 .case-story-loading {
   border: 4px solid #f3f3f3;

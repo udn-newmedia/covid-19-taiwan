@@ -106,7 +106,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 48px 0; 
+  // padding: 48px 0; 
 }
 .case-progress__table {
   overflow: hidden;
@@ -171,7 +171,7 @@ export default {
     align-items: center;
     padding: calc(5% - 4px) 0;
     margin-right: 8px;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
     border-radius: 50%;
     font-size: 12px;
     cursor: pointer;
