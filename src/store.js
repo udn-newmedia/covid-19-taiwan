@@ -4,8 +4,8 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
-const url = './data/Covid19Data.json';
-// const url = './data/Covid19Data_static.json';
+// const url = './data/Covid19Data.json';
+const url = './data/Covid19Data_static.json';
 
 export default new Vuex.Store({
   state: {
