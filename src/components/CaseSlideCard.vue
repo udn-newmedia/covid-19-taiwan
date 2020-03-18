@@ -64,13 +64,16 @@ export default {
         return false;
       } 
     },
-    fiftyCount() {
-      return this.$store.getters.fiftyCount;
+    fourtyCount() {
+      return this.$store.getters.fourtyCount;
     }
   },
   watch: {
-    fiftyCount: {
+    fourtyCount: {
       handler() {
+        /**
+         * handle dislocation after diagram tranlation
+         */
         this.handleCleanLine();
         const intervel = setInterval(() => {
           this.handleCleanLine();
@@ -99,7 +102,6 @@ export default {
 
               if (this.$store.state.currentSlideIndex !== this.data.index) {
                 this.$store.dispatch('updateSlideIndex', this.data.index);
-                // this.$store.dispatch('updateKey');
                 this.handleCleanLine();
               }
   

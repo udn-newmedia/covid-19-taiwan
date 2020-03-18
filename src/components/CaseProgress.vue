@@ -101,7 +101,7 @@ export default {
       if (this.deviceType === 'pad') translateDistance = 49.59 + 24;
       if (this.deviceType === 'pc')  translateDistance = 40 + 24;
       // if (this.diamondTopFlag) return 'translateY(0px)';
-      return 'translateY(-' +  (Math.max(0, this.$store.getters.fiftyCount * 4)) * translateDistance + 'px)';
+      return 'translateY(-' +  (Math.max(0, this.$store.getters.fourtyCount * 4)) * translateDistance + 'px)';
     }
   },
   methods: {
