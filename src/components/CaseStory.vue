@@ -70,7 +70,6 @@ export default {
             // }
           }
 
-
           this.ticking = false;
         });
       }

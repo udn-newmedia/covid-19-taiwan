@@ -2,8 +2,7 @@
   <div class="case-progress">
     <div class="case-progress__table">
       <div class="case-progress__table__header">
-        <h3>台灣境內確診<span class="case-progress__table__digit">{{$store.state.caseDataLength}}</span>例</h3>
-        <p style="font-size: 18px; font-weight: normal"> (*點按病例看說明)</p>
+        <h3>境內確診<span class="case-progress__table__digit">{{$store.state.caseDataLength}}</span>例</h3>
         <div class="table-lagend-container">
           <div class="table-lagend">
             <div class="table-lagend__color table-lagend__color--overseas" />
@@ -13,6 +12,7 @@
             <div class="table-lagend__color table-lagend__color--local" />
             <div class="table-lagend__text">本土案例</div>
           </div>
+          <p style="font-size: 18px; font-weight: normal"> (*點按病例看說明)</p>
         </div>
       </div>
       <div class="case-progress__table__body">
@@ -101,7 +101,7 @@ export default {
       if (this.deviceType === 'pad') translateDistance = 49.59 + 24;
       if (this.deviceType === 'pc')  translateDistance = 40 + 24;
       // if (this.diamondTopFlag) return 'translateY(0px)';
-      return 'translateY(-' +  (Math.max(0, this.$store.getters.fiftyCount * 5)) * translateDistance + 'px)';
+      return 'translateY(-' +  (Math.max(0, this.$store.getters.fiftyCount * 4)) * translateDistance + 'px)';
     }
   },
   methods: {
@@ -160,7 +160,16 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 20px 0;
+  margin: 15px 0;
+  @include smob {
+    margin: 0;
+  }
+  @include pc {
+    margin: 20px 0;
+  }
+  p {
+    white-space: nowrap;
+  }
   .table-lagend {
     position: relative;
     display: flex;
@@ -180,9 +189,17 @@ export default {
       }
     }
     .table-lagend__text {
-      font-size: 18px;
+      font-size: 15px;
       line-height: 1;
+      white-space: nowrap;
+      @include smob {
+        font-size: 12px;
+      }
+      @include pc {
+        font-size: 18px;
+      }
     }
+
   }
 }
 .schechule-diagram {

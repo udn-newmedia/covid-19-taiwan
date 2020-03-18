@@ -4,9 +4,9 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
-const url = './data/Covid19Data.json';
+// const url = './data/Covid19Data.json';
 // const url = 'https://udn.com/newmedia/2020/covid-19-taiwan/data/Covid19Data_static.json';
-// const url = './data/Covid19Data_static.json';
+const url = './data/Covid19Data_static.json';
 
 export default new Vuex.Store({
   state: {
@@ -264,8 +264,8 @@ export default new Vuex.Store({
       if (!state.caseData || state.currentSlideIndex === 0) return 0;
       if (state.caseData.occurance[state.currentSlideIndex].case === '-') return 0;
       const firstCase = +state.caseData.occurance[state.currentSlideIndex].case.split(',')[0];
-      if (firstCase < 100) return 0;
-      return (firstCase - firstCase % 50) / 50 - 1;
+      if (firstCase < 80) return 0;
+      return (firstCase - firstCase % 40) / 40 - 1;
     },
   },
   mutations: {
