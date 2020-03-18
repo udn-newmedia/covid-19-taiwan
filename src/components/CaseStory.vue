@@ -1,12 +1,12 @@
 <template>
   <div v-if="$store.state.caseData !== null" class="case-story">
-    <div :class="{
+    <div ref="caseStoryRef" :class="{
         'case-story__chart': true,
         'case-story__chart--bottom': bottomFlag,
         'case-story__chart--fixed': fixedFlag,
       }"
     >
-      <CaseProgress :key="$store.state.updateKey" :data="$store.state.caseData" />
+      <CaseProgress :diamondTopFlag="diamondTopFlag" :data="$store.state.caseData" />
     </div>
     <CaseSlideCard
       v-for="(item, index) in storyOccurence"
@@ -33,6 +33,7 @@ export default {
       fixedFlag: false,
       topFlag: false,
       bottomFlag: false,
+      // diamondTopFlag: false,
     };
   },
   computed: {
@@ -41,19 +42,12 @@ export default {
     }
   },
   methods: {
-    resetChart() {
-      let cases = [];
-      for (let i = 0; i < this.$store.state.caseDataLength; i++) {
-        cases.push(i+1)
-      }
-      this.$store.dispatch('updateCaseActive', cases);
-    },
     handleScroll() {
       if (!this.ticking) {
         window.requestAnimationFrame(() => {
           const pos =  this.$el.getBoundingClientRect();
           const top = pos.top;
-          const bottom = pos.bottom -  window.innerHeight;
+          const bottom = pos.bottom - (this.$refs.caseStoryRef.clientHeight);
           if (top <= 0 && bottom < 0) {
             /* above map */
             this.bottomFlag = true;
@@ -62,17 +56,21 @@ export default {
             if (top > 0) {
               if (this.$store.state.currentSlideIndex !== 1) {
                 this.$store.dispatch('updateSlideIndex', 1);
-                this.$store.dispatch('updateKey');
               }
             }
           }
-          this.resetChart();
 
           if (top <= 0 && bottom > 0) {
+            // if (this.diamondTopFlag) this.diamondTopFlag = false;
             if (!this.fixedFlag) this.fixedFlag = true;
           } else {
             if (this.fixedFlag) this.fixedFlag = false;
+            // if (top <= 0 && pos.bottom - window.innerHeight > 0) {
+            //   if (!this.diamondTopFlag) this.diamondTopFlag = true;
+            // }
           }
+
+
           this.ticking = false;
         });
       }

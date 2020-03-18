@@ -64,6 +64,22 @@ export default {
         return false;
       } 
     },
+    fiftyCount() {
+      return this.$store.getters.fiftyCount;
+    }
+  },
+  watch: {
+    fiftyCount: {
+      handler() {
+        this.handleCleanLine();
+        const intervel = setInterval(() => {
+          this.handleCleanLine();
+        }, 5);
+        setTimeout(() => {
+          clearInterval(intervel);
+        }, 350);
+      }
+    }
   },
   methods: {
     handleEvent(value) {
@@ -83,7 +99,7 @@ export default {
 
               if (this.$store.state.currentSlideIndex !== this.data.index) {
                 this.$store.dispatch('updateSlideIndex', this.data.index);
-                this.$store.dispatch('updateKey');
+                // this.$store.dispatch('updateKey');
                 this.handleCleanLine();
               }
   
@@ -93,8 +109,7 @@ export default {
                   this.$store.dispatch('updateCaseDisable', i + 1);
                 }
               }
-              
-              this.$store.dispatch('updateCaseActive', eventCases);              
+              this.$store.dispatch('updateCaseActive', eventCases);
             }
           } else {
             this.handleCleanLine();
@@ -150,7 +165,7 @@ export default {
               .attr('x1', circlePosLeft)
               .attr('y1', circlePosTop)
               .attr('x2', '50%')
-              .attr('y2', cardPos.top);
+              .attr('y2', cardPos.top + 5);
           }
           if (this.$store.state.caseData.cases[e].from === '境外移入') {
             g.select('#case-line-' + i)
@@ -158,7 +173,7 @@ export default {
               .attr('x1', circlePosLeft)
               .attr('y1', circlePosTop)
               .attr('x2', '50%')
-              .attr('y2', cardPos.top);
+              .attr('y2', cardPos.top + 5);
           }
         });
       }
@@ -185,7 +200,6 @@ export default {
   justify-content: flex-end;
   align-content: center;
   padding-bottom: 25vh;
-
   .case-slide-card__content {
     position: relative;
     width: 90%;

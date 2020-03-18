@@ -84,6 +84,10 @@ export default {
       type: Object,
       required: true,
     },
+    // diamondTopFlag: {
+    //   type: Boolean,
+    //   default: false,
+    // }
   },
   computed: {
     dataInner() {
@@ -93,7 +97,11 @@ export default {
       return Object.values(this.data.diamond);
     },
     caseDiagramTranslate() {
-      return 'translateY(-' +  this.$store.getters.fiftyCount * window.innerHeight * 0.5 + 'px)';
+      let translateDistance = (window.innerWidth - 32) * 0.1 + 16;
+      if (this.deviceType === 'pad') translateDistance = 49.59 + 24;
+      if (this.deviceType === 'pc')  translateDistance = 40 + 24;
+      // if (this.diamondTopFlag) return 'translateY(0px)';
+      return 'translateY(-' +  (Math.max(0, this.$store.getters.fiftyCount * 5)) * translateDistance + 'px)';
     }
   },
   methods: {
@@ -196,6 +204,7 @@ export default {
     margin-bottom: 24px;
     border-radius: 50%;
     font-size: 12px;
+    transition: .333s ease-in-out;
     cursor: pointer;
     @include clean-tap;
     @include pc {

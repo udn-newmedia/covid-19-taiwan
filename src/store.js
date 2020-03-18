@@ -262,9 +262,10 @@ export default new Vuex.Store({
   getters: {
     fiftyCount(state) {
       if (!state.caseData || state.currentSlideIndex === 0) return 0;
-
+      if (state.caseData.occurance[state.currentSlideIndex].case === '-') return 0;
       const firstCase = +state.caseData.occurance[state.currentSlideIndex].case.split(',')[0];
-      return (firstCase - firstCase % 50) / 50;
+      if (firstCase < 100) return 0;
+      return (firstCase - firstCase % 50) / 50 - 1;
     },
   },
   mutations: {
@@ -293,9 +294,9 @@ export default new Vuex.Store({
         console.log(error);
       });     
     },
-    updateKey (state) {
-      state.updateKey++;
-    },
+    // updateKey (state) {
+    //   state.updateKey++;
+    // },
     updateCaseActive (state, payload) {
       payload.forEach(e => {
         if (!state.caseData.cases[e].active) state.caseData.cases[e].active = true;
@@ -312,9 +313,9 @@ export default new Vuex.Store({
     getData (context) {
       context.commit('getData');
     },
-    updateKey (context) {
-      context.commit('updateKey');
-    },
+    // updateKey (context) {
+    //   context.commit('updateKey');
+    // },
     updateCaseActive (context, payload) {
       context.commit('updateCaseActive', payload);
     },
