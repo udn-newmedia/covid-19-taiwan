@@ -42,6 +42,13 @@ export default {
     }
   },
   methods: {
+    resetChart() {
+      let cases = [];
+      for (let i = 0; i < this.$store.state.caseDataLength; i++) {
+        cases.push(i+1)
+      }
+      this.$store.dispatch('updateCaseActive', cases);
+    },
     handleScroll() {
       if (!this.ticking) {
         window.requestAnimationFrame(() => {
@@ -65,6 +72,7 @@ export default {
             if (!this.fixedFlag) this.fixedFlag = true;
           } else {
             if (this.fixedFlag) this.fixedFlag = false;
+            if (top > 0) this.resetChart();
             // if (top <= 0 && pos.bottom - window.innerHeight > 0) {
             //   if (!this.diamondTopFlag) this.diamondTopFlag = true;
             // }
