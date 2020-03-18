@@ -6,7 +6,7 @@
         'case-story__chart--fixed': fixedFlag,
       }"
     >
-      <CaseProgress :diamondTopFlag="diamondTopFlag" :data="$store.state.caseData" />
+      <CaseProgress :data="$store.state.caseData" />
     </div>
     <CaseSlideCard
       v-for="(item, index) in storyOccurence"

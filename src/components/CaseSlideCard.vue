@@ -146,9 +146,10 @@ export default {
           const circlePos = document.getElementById('schechule-diagram__item-' + e).getBoundingClientRect();
           let circlePosLeft = 0;
           let circlePosTop = 0;
+          
           if (this.deviceType === 'mob') {
-            circlePosLeft = circlePos.left;
-            circlePosTop = circlePos.top + 15;
+            circlePosLeft = circlePos.left - 2;
+            circlePosTop = circlePos.top + 13;
           }
           if (this.deviceType === 'pad') {
             circlePosLeft = circlePos.left - ((window.innerWidth - 576) * 0.5) + 25;
