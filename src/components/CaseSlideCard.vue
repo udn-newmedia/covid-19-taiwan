@@ -111,7 +111,7 @@ export default {
                   this.$store.dispatch('updateCaseDisable', i + 1);
                 }
               }
-              this.$store.dispatch('updateCaseActive', eventCases);
+              // this.$store.dispatch('updateCaseActive', eventCases);
             }
           } else {
             this.handleCleanLine();
@@ -151,15 +151,15 @@ export default {
           
           if (this.deviceType === 'mob') {
             circlePosLeft = circlePos.left - 2;
-            circlePosTop = circlePos.top + 13;
+            circlePosTop = circlePos.top + 14;
           }
           if (this.deviceType === 'pad') {
             circlePosLeft = circlePos.left - ((window.innerWidth - 576) * 0.5) + 25;
             circlePosTop = circlePos.top + 25;
           }
           if (this.deviceType === 'pc') {
-            circlePosLeft = circlePos.left - ((window.innerWidth - 720) * 0.5) + 36;
-            circlePosTop = circlePos.top + 32;
+            circlePosLeft = circlePos.left - ((window.innerWidth - 720) * 0.5) + 30;
+            circlePosTop = circlePos.top + 22;
           }
 
           if (this.$store.state.caseData.cases[e].from === '本土案例') {
@@ -168,7 +168,7 @@ export default {
               .attr('x1', circlePosLeft)
               .attr('y1', circlePosTop)
               .attr('x2', '50%')
-              .attr('y2', cardPos.top + 5);
+              .attr('y2', cardPos.top + 8);
           }
           if (this.$store.state.caseData.cases[e].from === '境外移入') {
             g.select('#case-line-' + i)
@@ -176,7 +176,7 @@ export default {
               .attr('x1', circlePosLeft)
               .attr('y1', circlePosTop)
               .attr('x2', '50%')
-              .attr('y2', cardPos.top + 5);
+              .attr('y2', cardPos.top + 8);
           }
         });
       }

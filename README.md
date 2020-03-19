@@ -1,9 +1,8 @@
 # ncp_cases_progress
 
-
 ## data
 ```
-localhost靜態檔案 './data/Covid19Data.json'
+localhost測試檔案 './data/Covid19Data.json'
 ```
 
 ## Project setup

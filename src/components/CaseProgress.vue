@@ -135,7 +135,11 @@ export default {
   width: 100%;
   min-height: 30vh;
   .case-progress__table__header {
+    margin-top: 16px;
     background-color: #ffffff;
+    @include smob {
+      margin-top: 0;
+    }
     h3, p {
       margin-bottom: 0 !important;
       line-height: 1.3;
@@ -160,12 +164,9 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 15px 0;
+  margin: 8px 0 24px 0;
   @include smob {
     margin: 0;
-  }
-  @include pc {
-    margin: 20px 0;
   }
   p {
     white-space: nowrap;
