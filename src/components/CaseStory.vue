@@ -33,7 +33,6 @@ export default {
       fixedFlag: false,
       topFlag: false,
       bottomFlag: false,
-      // diamondTopFlag: false,
     };
   },
   computed: {
@@ -45,7 +44,7 @@ export default {
     resetChart() {
       let cases = [];
       for (let i = 0; i < this.$store.state.caseDataLength; i++) {
-        cases.push(i+1)
+        cases.push(i + 1);
       }
       this.$store.dispatch('updateCaseActive', cases);
     },
@@ -54,28 +53,29 @@ export default {
         window.requestAnimationFrame(() => {
           const pos =  this.$el.getBoundingClientRect();
           const top = pos.top;
-          const bottom = pos.bottom - (this.$refs.caseStoryRef.clientHeight);
+          const caseStoryHeight = this.$refs.caseStoryRef.clientHeight ? this.$refs.caseStoryRef.clientHeight : 0;
+          const bottom = pos.bottom - caseStoryHeight;
+
+          /* under chart or not */
           if (top <= 0 && bottom < 0) {
-            /* above map */
             this.bottomFlag = true;
           } else {
             this.bottomFlag = false;
+
+            /* abobe chart, return the first card and reset chart*/
             if (top > 0) {
+              this.resetChart();
               if (this.$store.state.currentSlideIndex !== 1) {
                 this.$store.dispatch('updateSlideIndex', 1);
               }
             }
           }
 
+          /* under chart or not */
           if (top <= 0 && bottom > 0) {
-            // if (this.diamondTopFlag) this.diamondTopFlag = false;
             if (!this.fixedFlag) this.fixedFlag = true;
           } else {
             if (this.fixedFlag) this.fixedFlag = false;
-            if (top > 0) this.resetChart();
-            // if (top <= 0 && pos.bottom - window.innerHeight > 0) {
-            //   if (!this.diamondTopFlag) this.diamondTopFlag = true;
-            // }
           }
 
           this.ticking = false;

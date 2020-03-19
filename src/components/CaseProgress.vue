@@ -53,7 +53,6 @@
             }"
             :id="'schechule-diagram__item' + (index + 1)"
           >
-            <!-- <div class="schechule-diagram__item__date">{{item.date}}</div> -->
             <div class="schechule-diagram__item__number">{{item.index}}</div>
           </div>
         </div>
@@ -84,10 +83,6 @@ export default {
       type: Object,
       required: true,
     },
-    // diamondTopFlag: {
-    //   type: Boolean,
-    //   default: false,
-    // }
   },
   computed: {
     dataInner() {
@@ -100,7 +95,6 @@ export default {
       let translateDistance = (window.innerWidth - 32) * 0.1 + 16;
       if (this.deviceType === 'pad') translateDistance = 49.59 + 24;
       if (this.deviceType === 'pc')  translateDistance = 40 + 24;
-      // if (this.diamondTopFlag) return 'translateY(0px)';
       return 'translateY(-' +  (Math.max(0, this.$store.getters.fourtyCount * 4)) * translateDistance + 'px)';
     }
   },
@@ -118,8 +112,8 @@ export default {
             vueScrollTo.scrollTo('#case-slide-card-' + (j + 1));
           }
         }
-      })
-    }
+      });
+    },
   },
 }
 </script>
