@@ -111,7 +111,7 @@ export default {
                   this.$store.dispatch('updateCaseDisable', i + 1);
                 }
               }
-              // this.$store.dispatch('updateCaseActive', eventCases);
+              this.$store.dispatch('updateCaseActive', eventCases);
             }
           } else {
             this.handleCleanLine();
@@ -151,7 +151,7 @@ export default {
           
           if (this.deviceType === 'mob') {
             circlePosLeft = circlePos.left - 2;
-            circlePosTop = circlePos.top + 14;
+            circlePosTop = circlePos.top + 3;
           }
           if (this.deviceType === 'pad') {
             circlePosLeft = circlePos.left - ((window.innerWidth - 576) * 0.5) + 25;
@@ -159,7 +159,7 @@ export default {
           }
           if (this.deviceType === 'pc') {
             circlePosLeft = circlePos.left - ((window.innerWidth - 720) * 0.5) + 30;
-            circlePosTop = circlePos.top + 22;
+            circlePosTop = circlePos.top + 9;
           }
 
           if (this.$store.state.caseData.cases[e].from === '本土案例') {

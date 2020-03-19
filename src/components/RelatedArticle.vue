@@ -30,8 +30,11 @@
 </template>
 
 <script>
+import { sendGaMethods } from '@/mixins/masterBuilder.js';
+
 export default {
   name: 'RelatedArticle',
+  mixins: [sendGaMethods],
   methods: {
     handleGA(title) {
       this.sendGA({
