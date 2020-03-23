@@ -13,6 +13,7 @@
             <div class="table-lagend__text">本土案例</div>
           </div>
           <p style="font-size: 18px; font-weight: normal"> (*點按病例看說明)</p>
+          <button @click="$store.dispatch('reverseData')">reverse</button>
         </div>
       </div>
       <div class="case-progress__table__body">

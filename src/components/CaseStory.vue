@@ -53,7 +53,7 @@ export default {
         window.requestAnimationFrame(() => {
           const pos =  this.$el.getBoundingClientRect();
           const top = pos.top;
-          const caseStoryHeight = this.$refs.caseStoryRef.clientHeight ? this.$refs.caseStoryRef.clientHeight : 0;
+          const caseStoryHeight = this.$refs.caseStoryRef.clientHeight != 0 ? this.$refs.caseStoryRef.clientHeight : 0;
           const bottom = pos.bottom - caseStoryHeight;
 
           /* under chart or not */

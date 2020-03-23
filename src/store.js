@@ -4,7 +4,6 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
-// const url = './data/Covid19Data.json';
 const url = './data/Covid19Data_static.json';
 
 export default new Vuex.Store({
@@ -12,7 +11,9 @@ export default new Vuex.Store({
     updateKey: 0,
     caseDataLength: 0,
     diamondDataLength: 0,
+    originData: null,
     caseData: null,
+    caseDataOrder: true,
     currentSlideIndex: 0,
   },
   getters: {
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     getData(state) {
       axios.get(url)
       .then(res => {
+        state.originData = { ...res.data };
         state.caseData = { ...res.data };
 
         // cases
@@ -50,9 +52,6 @@ export default new Vuex.Store({
         console.log(error);
       });     
     },
-    // updateKey (state) {
-    //   state.updateKey++;
-    // },
     updateCaseActive (state, payload) {
       payload.forEach(e => {
         if (!state.caseData.cases[e].active) state.caseData.cases[e].active = true;
@@ -64,14 +63,19 @@ export default new Vuex.Store({
     updateSlideIndex (state, payload) {
       state.currentSlideIndex = payload;
     },
+    reverseData(state) {
+      /**
+       * handle reverse cases data order
+       */
+      const reverseArray = Object.values(state.caseData.cases).reverse();
+      state.caseData.cases = {...reverseArray};
+      state.caseDataOrder = !state.caseDataOrder;
+    },
   },
   actions: {
     getData (context) {
       context.commit('getData');
     },
-    // updateKey (context) {
-    //   context.commit('updateKey');
-    // },
     updateCaseActive (context, payload) {
       context.commit('updateCaseActive', payload);
     },
@@ -80,6 +84,9 @@ export default new Vuex.Store({
     },
     updateSlideIndex (context, payload) {
       context.commit('updateSlideIndex', payload);
+    },
+    reverseData(context) {
+      context.commit('reverseData');
     },
   }
 })

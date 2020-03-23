@@ -99,19 +99,7 @@ export default {
             if (top <= window.innerHeight * 0.25 && bottom > window.innerHeight * 0.25) {
               this.handleDrawLine();
               this.handleUpdateLine();
-
-              if (this.$store.state.currentSlideIndex !== this.data.index) {
-                this.$store.dispatch('updateSlideIndex', this.data.index);
-                this.handleCleanLine();
-              }
-  
-              const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
-              for (let i = 0; i < this.$store.state.caseDataLength; i++) {
-                if (!eventCases.includes((i + 1).toString())) {
-                  this.$store.dispatch('updateCaseDisable', i + 1);
-                }
-              }
-              this.$store.dispatch('updateCaseActive', eventCases);
+              this.handleUpdataCircle();
             }
           } else {
             this.handleCleanLine();
@@ -130,11 +118,35 @@ export default {
           .attr('id', 'case-line-' + i)
           .attr('class', 'case-line')
       });
-
     },
     handleCleanLine() {
       const g = d3.select('#case-progress-svg').select('#line-group');
       g.selectAll('.case-line').remove();
+    },
+    handleUpdataCircle() {
+      /**
+       * handle increasing order
+       */
+      if (this.$store.state.caseDataOrder) {
+        if (this.$store.state.currentSlideIndex !== this.data.index) {
+          this.$store.dispatch('updateSlideIndex', this.data.index);
+          this.handleCleanLine();
+        }
+
+        const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
+        for (let i = 0; i < this.$store.state.caseDataLength; i++) {
+          if (!eventCases.includes((i + 1).toString())) {
+            this.$store.dispatch('updateCaseDisable', i + 1);
+          }
+        }
+        this.$store.dispatch('updateCaseActive', eventCases);
+      }
+      /**
+       * handle decreasing order
+       */
+      else {
+        // TODO: decreasing update circles
+      }
     },
     handleUpdateLine() {
       const card = document.getElementById('case-slide-card-' + this.data.index);
