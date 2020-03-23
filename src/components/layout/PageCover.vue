@@ -83,7 +83,7 @@ export default {
     padding-bottom: 36px;
     transform: translateX(-50%);
     @include pc {
-      padding-bottom: 40px;
+      padding-bottom: 16px;
     }
 
     &.page-cover__cases-table--loading {
