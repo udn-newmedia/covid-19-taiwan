@@ -13,7 +13,7 @@
             <div class="table-lagend__text">本土案例</div>
           </div>
           <p style="font-size: 18px; font-weight: normal"> (*點按病例看說明)</p>
-          <button @click="$store.dispatch('reverseData')">reverse</button>
+          <button @click="handleReverseData()">reverse</button>
         </div>
       </div>
       <div class="case-progress__table__body">
@@ -27,12 +27,14 @@
             :class="{
               'schechule-diagram__item': true,
               'schechule-diagram__item--disabled': item.active === false,
-              'schechule-diagram__item--local': item.active && item.from === '本土案例',
-              'schechule-diagram__item--overseas': item.active && item.from === '境外移入',
+              'schechule-diagram__item--local': item.from === '本土案例',
+              'schechule-diagram__item--overseas': item.from === '境外移入',
+              'schechule-diagram__item--unknown': false,
             }"
-            :id="'schechule-diagram__item-' + (index + 1)"
-            @click="handleCircleClick(index + 1)"
+            :id="'schechule-diagram__item-' + (calcIndex(index))"
+            @click="handleCircleClick(calcIndex(index))"
           >
+            {{item.active}}
             <div class="schechule-diagram__item__date">{{item.date}}</div>
             <div class="schechule-diagram__item__number">{{item.index}}</div>
           </div>
@@ -79,18 +81,14 @@ const firstWuhan = [2, 3, 4, 6, 7, 11, 12, 13];
 export default {
   name: 'CaseProgress',
   mixins: [autoResize_3],
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
   computed: {
     dataInner() {
-      return Object.values(this.data.cases);
+      console.log('aaa');
+      
+      return Object.values(this.$store.state.caseData.cases);
     },
     dataDiamond() {
-      return Object.values(this.data.diamond);
+      return Object.values(this.$store.state.caseData.diamond);
     },
     caseDiagramTranslate() {
       let translateDistance = (window.innerWidth - 32) * 0.1 + 16;
@@ -100,9 +98,16 @@ export default {
     }
   },
   methods: {
+    calcIndex(index) {
+      /* handle increasing order */
+      if (this.$store.state.caseDataOrder) return index + 1;
+      /* handle decreasing order */
+      return this.$store.state.caseDataLength - (+index);
+    },
     handleCircleClick(index) {
-      const occurance = Object.values({...this.data.occurance});
-        
+      const occurance = Object.values({...this.$store.state.caseData.occurance});
+
+      /* handle increasing order */
       if (firstWuhan.includes(index)) {
         vueScrollTo.scrollTo('#case-slide-card-' + 2);
       }  
@@ -115,6 +120,14 @@ export default {
         }
       });
     },
+    handleReverseData() {
+      this.$store.dispatch('reverseData');
+
+      /* handle increasing order */
+      if (this.$store.state.caseDataOrder) vueScrollTo.scrollTo('#case-slide-card-' + this.$store.state.occuranceLength);
+      /* handle decreasing order */
+      else vueScrollTo.scrollTo('#case-slide-card-' + 1);
+    }
   },
 }
 </script>

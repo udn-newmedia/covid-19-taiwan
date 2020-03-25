@@ -71,9 +71,7 @@ export default {
   watch: {
     fourtyCount: {
       handler() {
-        /**
-         * handle dislocation after diagram tranlation
-         */
+        /* handle dislocation after diagram tranlation */
         this.handleCleanLine();
         const intervel = setInterval(() => {
           this.handleCleanLine();
@@ -124,29 +122,39 @@ export default {
       g.selectAll('.case-line').remove();
     },
     handleUpdataCircle() {
-      /**
-       * handle increasing order
-       */
-      if (this.$store.state.caseDataOrder) {
+      /* handle increasing order */
+      // if (this.$store.state.caseDataOrder) {
         if (this.$store.state.currentSlideIndex !== this.data.index) {
           this.$store.dispatch('updateSlideIndex', this.data.index);
           this.handleCleanLine();
         }
 
         const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
+        
         for (let i = 0; i < this.$store.state.caseDataLength; i++) {
           if (!eventCases.includes((i + 1).toString())) {
             this.$store.dispatch('updateCaseDisable', i + 1);
           }
         }
         this.$store.dispatch('updateCaseActive', eventCases);
-      }
-      /**
-       * handle decreasing order
-       */
-      else {
-        // TODO: decreasing update circles
-      }
+      // }
+      /* handle decreasing order */
+      // else {
+      //   // TODO: decreasing update circles
+      //   if (this.$store.state.currentSlideIndex !== this.data.index) {
+      //     this.$store.dispatch('updateSlideIndex', this.data.index);
+      //     this.handleCleanLine();
+      //   }
+      //   const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
+
+      //   for (let i = 0; i < this.$store.state.caseDataLength; i++) {
+      //     if (!eventCases.includes((i + 1).toString())) {
+      //       this.$store.dispatch('updateCaseDisable', i + 1);
+      //     }
+      //   }
+        
+      //   this.$store.dispatch('updateCaseActive', eventCases);
+      // }
     },
     handleUpdateLine() {
       const card = document.getElementById('case-slide-card-' + this.data.index);
@@ -157,38 +165,45 @@ export default {
         const itemList = this.data.case.split(',');
 
         itemList.forEach((e, i) => {
-          const circlePos = document.getElementById('schechule-diagram__item-' + e).getBoundingClientRect();
-          let circlePosLeft = 0;
-          let circlePosTop = 0;
-          
-          if (this.deviceType === 'mob') {
-            circlePosLeft = circlePos.left - 2;
-            circlePosTop = circlePos.top + 3;
-          }
-          if (this.deviceType === 'pad') {
-            circlePosLeft = circlePos.left - ((window.innerWidth - 576) * 0.5) + 25;
-            circlePosTop = circlePos.top + 25;
-          }
-          if (this.deviceType === 'pc') {
-            circlePosLeft = circlePos.left - ((window.innerWidth - 720) * 0.5) + 30;
-            circlePosTop = circlePos.top + 9;
-          }
+          /* handle increasing order */
+          if (this.$store.state.caseDataOrder) {
+            const circlePos = document.getElementById('schechule-diagram__item-' + e).getBoundingClientRect();
+            let circlePosLeft = 0;
+            let circlePosTop = 0;
+            
+            if (this.deviceType === 'mob') {
+              circlePosLeft = circlePos.left - 2;
+              circlePosTop = circlePos.top + 3;
+            }
+            if (this.deviceType === 'pad') {
+              circlePosLeft = circlePos.left - ((window.innerWidth - 576) * 0.5) + 25;
+              circlePosTop = circlePos.top + 25;
+            }
+            if (this.deviceType === 'pc') {
+              circlePosLeft = circlePos.left - ((window.innerWidth - 720) * 0.5) + 30;
+              circlePosTop = circlePos.top + 9;
+            }
 
-          if (this.$store.state.caseData.cases[e].from === '本土案例') {
-            g.select('#case-line-' + i)
-              .attr('class', 'case-line case-line--local')
-              .attr('x1', circlePosLeft)
-              .attr('y1', circlePosTop)
-              .attr('x2', '50%')
-              .attr('y2', cardPos.top + 8);
+            if (this.$store.state.caseData.cases[e].from === '本土案例') {
+              g.select('#case-line-' + i)
+                .attr('class', 'case-line case-line--local')
+                .attr('x1', circlePosLeft)
+                .attr('y1', circlePosTop)
+                .attr('x2', '50%')
+                .attr('y2', cardPos.top + 8);
+            }
+            if (this.$store.state.caseData.cases[e].from === '境外移入') {
+              g.select('#case-line-' + i)
+                .attr('class', 'case-line case-line--overseas')
+                .attr('x1', circlePosLeft)
+                .attr('y1', circlePosTop)
+                .attr('x2', '50%')
+                .attr('y2', cardPos.top + 8);
+            }
           }
-          if (this.$store.state.caseData.cases[e].from === '境外移入') {
-            g.select('#case-line-' + i)
-              .attr('class', 'case-line case-line--overseas')
-              .attr('x1', circlePosLeft)
-              .attr('y1', circlePosTop)
-              .attr('x2', '50%')
-              .attr('y2', cardPos.top + 8);
+          /* handle decreasing order */
+          else {
+            // TODO: decreasing update line
           }
         });
       }
@@ -216,6 +231,7 @@ export default {
   align-content: center;
   padding-bottom: 25vh;
   .case-slide-card__content {
+    pointer-events: auto;
     position: relative;
     width: 90%;
     padding: 18px 15px;
