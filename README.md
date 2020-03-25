@@ -1,5 +1,8 @@
 # ncp_cases_progress
 
+>新增讀者需求
+1. 順序／倒序顯示
+
 ## data
 ```
 localhost測試檔案 './data/Covid19Data.json'

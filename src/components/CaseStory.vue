@@ -6,7 +6,7 @@
         'case-story__chart--fixed': fixedFlag,
       }"
     >
-      <CaseProgress :data="$store.state.caseData" />
+      <CaseProgress />
     </div>
     <CaseSlideCard
       v-for="(item, index) in storyOccurence"
@@ -37,7 +37,10 @@ export default {
   },
   computed: {
     storyOccurence() {
-      return Object.values(this.$store.state.caseData.occurance);
+      /* handle increasing order */
+      if (this.$store.state.caseDataOrder) return Object.values(this.$store.state.caseData.occurance);
+      /* handle decreasing order */
+      else return Object.values(this.$store.state.caseData.occurance).reverse();
     }
   },
   methods: {
@@ -46,6 +49,7 @@ export default {
       for (let i = 0; i < this.$store.state.caseDataLength; i++) {
         cases.push(i + 1);
       }
+      
       this.$store.dispatch('updateCaseActive', cases);
     },
     handleScroll() {
@@ -53,7 +57,7 @@ export default {
         window.requestAnimationFrame(() => {
           const pos =  this.$el.getBoundingClientRect();
           const top = pos.top;
-          const caseStoryHeight = this.$refs.caseStoryRef.clientHeight != 0 ? this.$refs.caseStoryRef.clientHeight : 0;
+          const caseStoryHeight = this.$refs.caseStoryRef ? this.$refs.caseStoryRef.clientHeight : 0;
           const bottom = pos.bottom - caseStoryHeight;
 
           /* under chart or not */
@@ -62,9 +66,10 @@ export default {
           } else {
             this.bottomFlag = false;
 
-            /* abobe chart, return the first card and reset chart*/
+            /* above chart, return the first card and reset chart*/
             if (top > 0) {
               this.resetChart();
+              
               if (this.$store.state.currentSlideIndex !== 1) {
                 this.$store.dispatch('updateSlideIndex', 1);
               }
