@@ -56,6 +56,7 @@ export default {
 <style lang="scss" scoped>
 @import '~/style/_mixins.scss';
 .page-back-top {
+  pointer-events: none;
   position: fixed;
   overflow: hidden;
   right: 10px;

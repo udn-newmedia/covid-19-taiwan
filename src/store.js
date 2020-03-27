@@ -6,36 +6,36 @@ Vue.use(Vuex)
 
 // const url = './data/Covid19Data_static.json';
 const url = './data/Covid19Data_static_new.json';
+const slideGap = 40;
 
 export default new Vuex.Store({
   state: {
-    updateKey: 0,
     caseDataLength: 0,
     diamondDataLength: 0,
     originData: null,
     caseData: null,
-    caseDataReverse: {},
-    caseDataOrder: true,
+    caseDataOrder: false,
     occuranceLength: 0,
     currentSlideIndex: 0,
+    viewGroup: false
   },
   getters: {
     fourtyCount(state) {
+      if (!state.caseData || state.currentSlideIndex === 0 || state.currentSlideIndex === 1) return 0;
+      if (state.caseData.occurance[state.currentSlideIndex].case === '-') return 0;
       /* handle increasing order */
       if (state.caseDataOrder) {
-        if (!state.caseData || state.currentSlideIndex === 0) return 0;
-        if (state.caseData.occurance[state.currentSlideIndex].case === '-') return 0;
         const firstCase = +state.caseData.occurance[state.currentSlideIndex].case.split(',')[0];
-        if (firstCase < 80) return 0;
-        return (firstCase - firstCase % 40) / 40 - 1;
+        if (firstCase < slideGap * 2) return 0;
+        return (firstCase - firstCase % slideGap) / slideGap - 1;
       }
       /* handle decreasing order */
       else {
-        if (!state.caseData || state.currentSlideIndex === 0) return 0;
-        if (state.caseData.occurance[state.currentSlideIndex].case === '-') return 0;
-        const firstCase = +state.caseData.occurance[state.currentSlideIndex].case.split(',')[0];
-        if (firstCase < 80) return 0;
-        return (firstCase - firstCase % 40) / 40 - 1;
+        const lastCaseList = state.caseData.occurance[state.currentSlideIndex].case.split(',');
+        const lastCase = state.caseDataLength - +lastCaseList[lastCaseList.length - 1];
+
+        if (lastCase < slideGap * 2) return 0;
+        return (lastCase - lastCase % slideGap) / slideGap - 1;
       }
     },
   },
@@ -53,7 +53,6 @@ export default new Vuex.Store({
         
         for (let i = 0; i < state.caseDataLength; i++) {
           state.caseData.cases[i + 1].active = true;
-          state.caseDataReverse[state.caseDataLength - i] = state.caseData.cases[i + 1];
         }
 
         /* diamond */
@@ -82,10 +81,10 @@ export default new Vuex.Store({
       state.currentSlideIndex = payload;
     },
     reverseData(state) {
-      /**
-       * handle reverse cases data order
-       */ 
       state.caseDataOrder = !state.caseDataOrder;
+    },
+    changeViewType(state) {
+      state.viewGroup = !state.viewGroup;
     },
   },
   actions: {
@@ -103,6 +102,9 @@ export default new Vuex.Store({
     },
     reverseData(context) {
       context.commit('reverseData');
+    },
+    changeViewType(context) {
+      context.commit('changeViewType');
     },
   }
 })

@@ -1,29 +1,36 @@
 <template>
-  <div v-if="$store.state.caseData !== null" class="case-story">
+  <div id="case-story" v-if="$store.state.caseData !== null" class="case-story">
     <div ref="caseStoryRef" :class="{
         'case-story__chart': true,
         'case-story__chart--bottom': bottomFlag,
         'case-story__chart--fixed': fixedFlag,
+        'case-story__chart--group-type': $store.state.viewGroup,
       }"
     >
-      <CaseProgress />
+      <CaseProgress :groupList=groupList />
     </div>
-    <CaseSlideCard
-      v-for="(item, index) in storyOccurence"
-      :key="index"
-      :data="item"
-    />
-    <CaseSlideCard />
+    <div v-show="!$store.state.viewGroup" class="case-slide-card-container">
+      <CaseSlideCard
+        v-for="(item, index) in storyOccurence"
+        :key="index"
+        :data="item"
+      />
+    </div>
+    <div v-show="$store.state.viewGroup" class="case-slide-card-container case-slide-card-container--group-type">
+      <CaseGroup :groupList=groupList />
+    </div>
   </div>
   <div v-else class="case-story-loading" />
 </template>
 
 <script>
+import CaseGroup from '@/components/CaseGroup';
 import CaseProgress from '@/components/CaseProgress.vue';
 import CaseSlideCard from '@/components/CaseSlideCard.vue';
 export default {
   naem: 'CaseStory',
   components: {
+    CaseGroup,
     CaseProgress,
     CaseSlideCard,
   },
@@ -38,10 +45,35 @@ export default {
   computed: {
     storyOccurence() {
       /* handle increasing order */
-      if (this.$store.state.caseDataOrder) return Object.values(this.$store.state.caseData.occurance);
+      if (this.$store.state.caseDataOrder) {
+        return Object.values(this.$store.state.caseData.occurance);
+      }
       /* handle decreasing order */
-      else return Object.values(this.$store.state.caseData.occurance).reverse();
-    }
+      else {
+        /* pop first occurence */
+        const tempArray = Object.values(this.$store.state.caseData.occurance).reverse().map(e => e);
+        tempArray.pop();
+        tempArray.pop();
+        const outputArray = tempArray.sort((a, b) => {
+          const frontArr = a.case.split(',');
+          const rearArr = b.case.split(',');
+          const front = +frontArr[frontArr.length - 1];
+          const rear = +rearArr[rearArr.length - 1];
+          return front - rear;
+        });
+
+        outputArray.push(this.$store.state.caseData.occurance[1]);
+        outputArray.reverse();
+        outputArray.push(this.$store.state.caseData.occurance[2]);
+        
+        return outputArray;
+      }
+    },
+    groupList() {
+      return Object.values(this.$store.state.caseData.occurance).filter(e => {
+        return e.group !== '-';
+      }).reverse();
+    },
   },
   methods: {
     resetChart() {
@@ -58,11 +90,12 @@ export default {
           const pos =  this.$el.getBoundingClientRect();
           const top = pos.top;
           const caseStoryHeight = this.$refs.caseStoryRef ? this.$refs.caseStoryRef.clientHeight : 0;
+          // const bottom = pos.bottom - window.innerHeight * .35;
           const bottom = pos.bottom - caseStoryHeight;
-
           /* under chart or not */
           if (top <= 0 && bottom < 0) {
             this.bottomFlag = true;
+            // if (this.$store.state.currentSlideIndex !== 0) this.$store.dispatch('updateSlideIndex', 0);
           } else {
             this.bottomFlag = false;
 
@@ -82,7 +115,6 @@ export default {
           } else {
             if (this.fixedFlag) this.fixedFlag = false;
           }
-
           this.ticking = false;
         });
       }
@@ -124,7 +156,6 @@ export default {
   left: 0;
   top: 0;
   width: 100%;
-  // height: 100vh;
   margin: auto;
   &.case-story__chart--bottom {
     top: auto;
@@ -140,6 +171,20 @@ export default {
     @include pc {
       padding: 0 calc(50% - 360px);
     }
+  }
+  &.case-story__chart--group-type {
+    z-index: 5;
+    background-color: #fff;
+  }
+}
+.case-slide-card-container {
+  pointer-events: none;
+  position: relative;
+  height: 100%;
+  padding-bottom: 235vh;
+  &.case-slide-card-container--group-type {
+    transform: translateY(120px);
+    padding-bottom: 0;
   }
 }
 </style>

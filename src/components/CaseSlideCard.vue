@@ -1,25 +1,48 @@
 <template>
-  <div class="case-slide-card">
+  <div v-if="$store.state.caseDataOrder" class="case-slide-card" :id="'case-slide-' + data.index">
     <div
-      v-if="data"
+      v-show="data"
       :id="'case-slide-card-' + data.index"
       :class="{
-          'case-slide-card__content': true,
-          'case-slide-card__content--type-local': eventType_1 === 'local',
-          'case-slide-card__content--type-overseas': eventType_1 === 'overseas',
-        }"
-      >
+        'case-slide-card__content': true,
+        'case-slide-card__content--type-local': eventType_1 === 'local',
+        'case-slide-card__content--type-overseas': eventType_1 === 'overseas',
+      }"
+    >
       <p>{{handleEvent(data.evnet_1)}}</p>
     </div>
     <div
-      v-if="data && eventType_2"
+      v-show="data && eventType_2"
       :class="{
-          'case-slide-card__content': true,
-          'case-slide-card__content--type-local': eventType_2 === 'local',
-          'case-slide-card__content--type-overseas': eventType_2 === 'overseas',
-        }"
-      >
+        'case-slide-card__content': true,
+        'case-slide-card__content--type-local': eventType_2 === 'local',
+        'case-slide-card__content--type-overseas': eventType_2 === 'overseas',
+      }"
+    >
       <p>{{handleEvent(data.evnet_2)}}</p>
+    </div>
+  </div>
+  <div v-else class="case-slide-card" :id="'case-slide-' + data.index">
+    <div
+      v-show="data && eventType_2"
+      :class="{
+        'case-slide-card__content': true,
+        'case-slide-card__content--type-local': eventType_2 === 'local',
+        'case-slide-card__content--type-overseas': eventType_2 === 'overseas',
+      }"
+    >
+      <p>{{handleEvent(data.evnet_2)}}</p>
+    </div>
+    <div
+      v-show="data"
+      :id="'case-slide-card-' + data.index"
+      :class="{
+        'case-slide-card__content': true,
+        'case-slide-card__content--type-local': eventType_1 === 'local',
+        'case-slide-card__content--type-overseas': eventType_1 === 'overseas',
+      }"
+    >
+      <p>{{handleEvent(data.evnet_1)}}</p>
     </div>
   </div>
 </template>
@@ -90,16 +113,19 @@ export default {
       return value;
     },
     handleScroll() {
+      if (this.$store.state.viewGroup) return;
       if (!this.ticking) {
         window.requestAnimationFrame(() => {
           if (this.data.index !== 1) {
             const pos = this.$el.getBoundingClientRect();
             const top = pos.top;
             const bottom = pos.bottom
+            // if (top <= window.innerHeight * 0.25 && bottom > window.innerHeight * 0.25) {
             if (top <= window.innerHeight * 0.25 && bottom > window.innerHeight * 0.25) {
               this.handleDrawLine();
               this.handleUpdateLine();
-              this.handleUpdataCircle();
+              this.handlerUpdateSlideIndex();
+              this.handleUpdateCircle();
             }
           } else {
             this.handleCleanLine();
@@ -123,13 +149,15 @@ export default {
       const g = d3.select('#case-progress-svg').select('#line-group');
       g.selectAll('.case-line').remove();
     },
-    handleUpdataCircle() {
+    handlerUpdateSlideIndex() {
       if (this.$store.state.currentSlideIndex !== this.data.index) {
         this.$store.dispatch('updateSlideIndex', this.data.index);
         this.handleCleanLine();
       }
-
+    },
+    handleUpdateCircle() {
       const eventCases = this.$store.state.caseData.occurance[this.$store.state.currentSlideIndex].case.split(',');
+      
       for (let i = 0; i < this.$store.state.caseDataLength; i++) {
         if (!eventCases.includes((i + 1).toString())) {
           this.$store.dispatch('updateCaseDisable', i + 1);
@@ -140,13 +168,12 @@ export default {
     handleUpdateLine() {
       const card = document.getElementById('case-slide-card-' + this.data.index);
       const g = d3.select('#case-progress-svg').select('#line-group');
-
       if (card) {
         const cardPos = card.getBoundingClientRect();
         const itemList = this.data.case.split(',');
 
         itemList.forEach((e, i) => {
-          const circlePos = document.getElementById('schechule-diagram__item-' + e).getBoundingClientRect();
+          const circlePos = document.getElementById('case-progress__item-' + e).getBoundingClientRect();
           let circlePosLeft = 0;
           let circlePosTop = 0;
           
@@ -192,7 +219,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~/style/_mixins.scss';
 .case-slide-card {
   pointer-events: none;
@@ -205,6 +232,7 @@ export default {
   align-content: center;
   padding-bottom: 25vh;
   .case-slide-card__content {
+    pointer-events: auto;
     position: relative;
     width: 90%;
     padding: 18px 15px;
