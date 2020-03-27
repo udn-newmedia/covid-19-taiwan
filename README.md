@@ -1,14 +1,11 @@
-# ncp_cases_progress
+# covid-19-taiwan
 
->新增讀者需求
+[圖解新冠肺炎台灣病例關係](https://udn.com/newmedia/2020/covid-19-taiwan/)
 
-1. 順序／倒序顯示
-
-## data
-
-```text=
-localhost測試檔案 './data/Covid19Data.json'
-```
+>v2.0 新增讀者需求：
+>
+>1.順序 / 倒序功能
+>2.僅顯示群聚感染功能
 
 ## Project setup
 

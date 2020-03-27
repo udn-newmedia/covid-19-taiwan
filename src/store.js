@@ -26,16 +26,13 @@ export default new Vuex.Store({
       /* handle increasing order */
       if (state.caseDataOrder) {
         const firstCase = +state.caseData.occurance[state.currentSlideIndex].case.split(',')[0];
-        if (firstCase < slideGap * 2) return 0;
-        return (firstCase - firstCase % slideGap) / slideGap - 1;
+        return (firstCase - firstCase % slideGap) / slideGap;
       }
       /* handle decreasing order */
       else {
         const lastCaseList = state.caseData.occurance[state.currentSlideIndex].case.split(',');
         const lastCase = state.caseDataLength - +lastCaseList[lastCaseList.length - 1];
-
-        if (lastCase < slideGap * 2) return 0;
-        return (lastCase - lastCase % slideGap) / slideGap - 1;
+        return (lastCase - lastCase % slideGap) / slideGap;
       }
     },
   },
