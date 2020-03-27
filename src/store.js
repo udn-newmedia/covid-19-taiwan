@@ -4,7 +4,8 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
-const url = './data/Covid19Data_static.json';
+// const url = './data/Covid19Data_static.json';
+const url = './data/Covid19Data_static_new.json';
 
 export default new Vuex.Store({
   state: {
@@ -30,7 +31,11 @@ export default new Vuex.Store({
       }
       /* handle decreasing order */
       else {
-        return 0;
+        if (!state.caseData || state.currentSlideIndex === 0) return 0;
+        if (state.caseData.occurance[state.currentSlideIndex].case === '-') return 0;
+        const firstCase = +state.caseData.occurance[state.currentSlideIndex].case.split(',')[0];
+        if (firstCase < 80) return 0;
+        return (firstCase - firstCase % 40) / 40 - 1;
       }
     },
   },
@@ -65,7 +70,9 @@ export default new Vuex.Store({
     },
     updateCaseActive (state, payload) {
       payload.forEach(e => {
-        if (!state.caseData.cases[e].active) state.caseData.cases[e].active = true;
+        if (!state.caseData.cases[e].active) {
+          state.caseData.cases[e].active = true;
+        }
       });
     },
     updateCaseDisable (state, payload) {
@@ -79,15 +86,6 @@ export default new Vuex.Store({
        * handle reverse cases data order
        */ 
       state.caseDataOrder = !state.caseDataOrder;
-      state.caseData.cases = {};
-
-      for (let i = 0; i < state.caseDataLength; i++) {
-        /* handle increasing order */
-        if (state.caseDataOrder) state.caseData.cases[i + 1] = state.caseDataReverse[state.caseDataLength - i];
-        /* handle decreasing order */
-        else state.caseData.cases[i + 1] = state.caseDataReverse[i + 1];
-        
-      }
     },
   },
   actions: {

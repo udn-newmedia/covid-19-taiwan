@@ -17,22 +17,22 @@
         </div>
       </div>
       <div class="case-progress__table__body">
-        <div class="schechule-diagram"
+        <div
+          class="schechule-diagram"
           :style="{ transform: caseDiagramTranslate }"
         >
           <div
-            v-for="(item, index) in dataInner" :key="index"
+            v-for="item in dataInner" :key="item.index"
             :class="{
               'schechule-diagram__item': true,
               'schechule-diagram__item--disabled': item.active === false,
               'schechule-diagram__item--local': item.from === '本土案例',
               'schechule-diagram__item--overseas': item.from === '境外移入',
-              'schechule-diagram__item--unknown': false,
+              'schechule-diagram__item--unknown': item.unknow === 'y',
             }"
-            :id="'schechule-diagram__item-' + (calcIndex(index))"
-            @click="handleCircleClick(calcIndex(index))"
+            :id="'schechule-diagram__item-' + item.index"
+            @click="handleCircleClick(item.index)"
           >
-            {{item.active}}
             <div class="schechule-diagram__item__date">{{item.date}}</div>
             <div class="schechule-diagram__item__number">{{item.index}}</div>
           </div>
@@ -81,8 +81,7 @@ export default {
   mixins: [autoResize_3],
   computed: {
     dataInner() {
-      console.log('aaa');
-      
+      if (!this.$store.state.caseDataOrder) return Object.values(this.$store.state.caseData.cases).reverse();
       return Object.values(this.$store.state.caseData.cases);
     },
     dataDiamond() {
@@ -96,16 +95,9 @@ export default {
     }
   },
   methods: {
-    calcIndex(index) {
-      /* handle increasing order */
-      if (this.$store.state.caseDataOrder) return index + 1;
-      /* handle decreasing order */
-      return this.$store.state.caseDataLength - (+index);
-    },
     handleCircleClick(index) {
       const occurance = Object.values({...this.$store.state.caseData.occurance});
 
-      /* handle increasing order */
       if (firstWuhan.includes(index)) {
         vueScrollTo.scrollTo('#case-slide-card-' + 2);
       }  
@@ -223,17 +215,18 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: calc(5% - 4px) 0;
+    padding: calc(5% - 5px) 0;
     margin-right: 8px;
     margin-bottom: 24px;
     border-radius: 50%;
+    border: solid 1px transparent;
     font-size: 12px;
     transition: .333s ease-in-out;
     cursor: pointer;
     @include clean-tap;
     @include pc {
       width: calc(10% - 32px);
-      padding: calc(5% - 16px) 0;
+      padding: calc(5% - 17px) 0;
       margin: 0 35px 24px 0;
       font-size: 14px;
     }
@@ -256,6 +249,9 @@ export default {
     &.schechule-diagram__item--diamond {
       background-color: #e8decf;
       cursor: initial;
+    }
+    &.schechule-diagram__item--unknown {
+      border: solid 1px #000000;
     }
 
     .schechule-diagram__item__date {
