@@ -4,7 +4,6 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
-// const url = './data/Covid19Data_static.json';
 const url = './data/Covid19Data_static_new.json';
 const slideGap = 40;
 
