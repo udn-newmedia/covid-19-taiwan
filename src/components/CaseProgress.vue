@@ -18,6 +18,10 @@
               <div class="table-legend__text">本土案例{{localCasesAmount}}例</div>
             </div>
             <div class="table-legend">
+              <div class="table-legend__color table-legend__color--dunmu"></div>
+              <div class="table-legend__text">敦睦艦案例{{dunmuCasesAmount}}例</div>
+            </div>
+            <div class="table-legend">
               <div class="table-legend__color table-legend__color--unknown"></div>
               <div class="table-legend__text">感染源不明{{$store.state.caseData.unknow}}例</div>
             </div>
@@ -32,6 +36,10 @@
             <div class="table-legend">
               <div class="table-legend__color table-legend__color--local"></div>
               <div class="table-legend__text">本土案例</div>
+            </div>
+            <div class="table-legend">
+              <div class="table-legend__color table-legend__color--dunmu"></div>
+              <div class="table-legend__text">敦睦艦隊</div>
             </div>
             <div class="table-legend">
               <div class="table-legend__color table-legend__color--unknown"></div>
@@ -109,6 +117,7 @@
               'case-progress__item--disabled': item.active === false,
               'case-progress__item--local': item.from === '本土案例',
               'case-progress__item--overseas': item.from === '境外移入',
+              'case-progress__item--dunmu': item.from === '敦睦艦隊',
               'case-progress__item--unknown': item.unknow === 'y',
             }"
             :id="'case-progress__item-' + item.index"
@@ -128,7 +137,7 @@
         <g id="line-group"></g>
       </svg>
     </div>
-    <div 
+    <!-- <div 
       v-if="!$store.state.viewGroup"
       class="case-progress__table"
     >
@@ -152,7 +161,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -197,6 +206,11 @@ export default {
     overseasCasesAmount() {
       return Object.values(this.$store.state.caseData.cases).filter(e => {
         return e.from === '境外移入'
+      }).length;
+    },
+    dunmuCasesAmount() {
+      return Object.values(this.$store.state.caseData.cases).filter(e => {
+        return e.from === '敦睦艦隊'
       }).length;
     },
   },
@@ -430,6 +444,9 @@ export default {
       &.table-legend__color--local {
         background-color: #e8ef23;
       }
+      &.table-legend__color--dunmu {
+        background-color: #e8decf;
+      }
       &.table-legend__color--unknown {
         border: solid 1px #000000;
       }
@@ -495,13 +512,16 @@ export default {
     &.case-progress__item--dead {
       background-color: #455a78;
     }
+    &.case-progress__item--dunmu {
+      background-color: #e8decf;
+    }
     &.case-progress__item--disabled {
       background-color: #efefef;
     }
-    &.case-progress__item--diamond {
-      background-color: #e8decf;
-      cursor: initial;
-    }
+    // &.case-progress__item--diamond {
+    //   background-color: #e8decf;
+    //   cursor: initial;
+    // }
     &.case-progress__item--unknown {
       border: solid 1px #000000;
     }
@@ -540,6 +560,9 @@ export default {
     }
     .case-line--local {
       stroke: #e8ef23;
+    }
+    .case-line--dunmu {
+      stroke: #e8decf;
     }
   }
 }

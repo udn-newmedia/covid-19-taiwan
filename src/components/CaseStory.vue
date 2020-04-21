@@ -65,7 +65,7 @@ export default {
         outputArray.push(this.$store.state.caseData.occurance[1]);
         outputArray.reverse();
         outputArray.push(this.$store.state.caseData.occurance[2]);
-        
+
         return outputArray;
       }
     },

@@ -7,6 +7,7 @@
         'case-slide-card__content': true,
         'case-slide-card__content--type-local': eventType_1 === 'local',
         'case-slide-card__content--type-overseas': eventType_1 === 'overseas',
+        'case-slide-card__content--type-dunmu': eventType_1 === 'dunmu',
       }"
     >
       <p>{{handleEvent(data.evnet_1)}}</p>
@@ -17,6 +18,7 @@
         'case-slide-card__content': true,
         'case-slide-card__content--type-local': eventType_2 === 'local',
         'case-slide-card__content--type-overseas': eventType_2 === 'overseas',
+        'case-slide-card__content--type-dunmu': eventType_2 === 'dunmu',
       }"
     >
       <p>{{handleEvent(data.evnet_2)}}</p>
@@ -29,6 +31,7 @@
         'case-slide-card__content': true,
         'case-slide-card__content--type-local': eventType_2 === 'local',
         'case-slide-card__content--type-overseas': eventType_2 === 'overseas',
+        'case-slide-card__content--type-dunmu': eventType_2 === 'dunmu',
       }"
     >
       <p>{{handleEvent(data.evnet_2)}}</p>
@@ -40,6 +43,7 @@
         'case-slide-card__content': true,
         'case-slide-card__content--type-local': eventType_1 === 'local',
         'case-slide-card__content--type-overseas': eventType_1 === 'overseas',
+        'case-slide-card__content--type-dunmu': eventType_1 === 'dunmu',
       }"
     >
       <p>{{handleEvent(data.evnet_1)}}</p>
@@ -73,6 +77,7 @@ export default {
       if (_case[0]) {
         if (this.$store.state.caseData.cases[_case[0]].from === '境外移入') return 'overseas';
         if (this.$store.state.caseData.cases[_case[0]].from === '本土案例') return 'local';
+        if (this.$store.state.caseData.cases[_case[0]].from === '敦睦艦隊') return 'dunmu';
       }
       return false;
     },
@@ -83,7 +88,21 @@ export default {
         return false;
       } else { 
         if (this.eventType_1 === 'overseas') return 'local';
-        if (this.eventType_1 === 'local') return 'overseas';
+        if (this.eventType_1 === 'dunmu') return 'local';
+        if (this.eventType_1 === 'local') {
+          const _case = this.data.case.split(',');
+          const _caseFromOverseas = _case.filter((e, i) => {
+            if (i > 0) return this.$store.state.caseData.cases[e].from === '境外移入';
+          })
+          const _caseFromDunmu = _case.filter((e, i) => {
+            if (i > 0) return this.$store.state.caseData.cases[e].from === '敦睦艦隊';
+          })
+          console.log(_caseFromDunmu);
+
+          if (_caseFromOverseas.length > 0) return 'overseas';
+          if (_caseFromDunmu.length > 0) return 'dunmu';
+          return false;
+        }
         return false;
       } 
     },
@@ -124,7 +143,7 @@ export default {
             if (top <= window.innerHeight * 0.25 && bottom > window.innerHeight * 0.25) {
               this.handleDrawLine();
               this.handleUpdateLine();
-              this.handlerUpdateSlideIndex();
+              this.handleUpdateSlideIndex();
               this.handleUpdateCircle();
             }
           } else {
@@ -149,7 +168,7 @@ export default {
       const g = d3.select('#case-progress-svg').select('#line-group');
       g.selectAll('.case-line').remove();
     },
-    handlerUpdateSlideIndex() {
+    handleUpdateSlideIndex() {
       if (this.$store.state.currentSlideIndex !== this.data.index) {
         this.$store.dispatch('updateSlideIndex', this.data.index);
         this.handleCleanLine();
@@ -206,6 +225,14 @@ export default {
               .attr('x2', '50%')
               .attr('y2', cardPos.top + 8);
           }
+          if (this.$store.state.caseData.cases[e].from === '敦睦艦隊') {
+            g.select('#case-line-' + i)
+              .attr('class', 'case-line case-line--dunmu')
+              .attr('x1', circlePosLeft)
+              .attr('y1', circlePosTop)
+              .attr('x2', '50%')
+              .attr('y2', cardPos.top + 8);
+          }
         });
       }
     },
@@ -250,6 +277,9 @@ export default {
     }
     &.case-slide-card__content--type-overseas {
       background-color: #4eadca;
+    }
+    &.case-slide-card__content--type-dunmu {
+      background-color: #e8decf;
     }
 
     p {

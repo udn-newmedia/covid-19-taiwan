@@ -62,7 +62,7 @@ export default new Vuex.Store({
       })
       .catch(error => {
         console.log(error);
-      });     
+      });
     },
     updateCaseActive (state, payload) {
       payload.forEach(e => {

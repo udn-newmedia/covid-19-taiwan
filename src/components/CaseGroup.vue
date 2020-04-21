@@ -14,6 +14,7 @@
             'case-progress__item': true,
             'case-progress__item--local': $store.state.caseData.cases[item_c].from === '本土案例',
             'case-progress__item--overseas': $store.state.caseData.cases[item_c].from === '境外移入',
+            'case-progress__item--dunmu': $store.state.caseData.cases[item_c].from === '敦睦艦隊',
             'case-progress__item--unknown': $store.state.caseData.cases[item_c].unknow === 'y',
           }"
         >
@@ -29,6 +30,7 @@
               'case-slide-card__content--group': true,
               'case-slide-card__content--type-local': calcEventType_1(item) === 'local',
               'case-slide-card__content--type-overseas': calcEventType_1(item) === 'overseas',
+              'case-slide-card__content--type-dunmu': calcEventType_1(item) === 'dunmu',
             }"
           >
           <p>{{handleEvent(item.evnet_1)}}</p>
@@ -40,6 +42,7 @@
               'case-slide-card__content--group': true,
               'case-slide-card__content--type-local': calcEventType_2(item) === 'local',
               'case-slide-card__content--type-overseas': calcEventType_2(item) === 'overseas',
+              'case-slide-card__content--type-dunmu': calcEventType_2(item) === 'dunmu',
             }"
           >
           <p>{{handleEvent(item.evnet_2)}}</p>
@@ -80,6 +83,7 @@ export default {
       if (_case[0]) {
         if (this.$store.state.caseData.cases[_case[0]].from === '境外移入') return 'overseas';
         if (this.$store.state.caseData.cases[_case[0]].from === '本土案例') return 'local';
+        if (this.$store.state.caseData.cases[_case[0]].from === '敦睦艦隊') return 'dunmu';
       }
       return false;
     },
@@ -90,7 +94,21 @@ export default {
         return false;
       } else { 
         if (this.calcEventType_1(item) === 'overseas') return 'local';
-        if (this.calcEventType_1(item) === 'local') return 'overseas';
+        if (this.calcEventType_1(item) === 'dunmu') return 'local';
+        if (this.calcEventType_1(item) === 'local') {
+          const _case = item.case.split(',');
+          const _caseFromOverseas = _case.filter((e, i) => {
+            if (i > 0) return this.$store.state.caseData.cases[e].from === '境外移入';
+          })
+          const _caseFromDunmu = _case.filter((e, i) => {
+            if (i > 0) return this.$store.state.caseData.cases[e].from === '敦睦艦隊';
+          })
+
+          if (_caseFromOverseas.length > 0) return 'overseas';
+          if (_caseFromDunmu.length > 0) return 'dunmu';
+          return false;
+        }
+
         return false;
       } 
     },
