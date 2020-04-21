@@ -19,7 +19,7 @@
             </div>
             <div class="table-legend">
               <div class="table-legend__color table-legend__color--dunmu"></div>
-              <div class="table-legend__text">敦睦艦案例{{dunmuCasesAmount}}例</div>
+              <div class="table-legend__text">敦睦艦隊{{dunmuCasesAmount}}例</div>
             </div>
             <div class="table-legend">
               <div class="table-legend__color table-legend__color--unknown"></div>
