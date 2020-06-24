@@ -74,6 +74,31 @@ const gaTable = {
     action: 'click',
     label: '願景工程_logo'
   },
+  MenuLink_1: {
+    category: 'hamburger',
+    action: 'click',
+    label: '全球疫情地圖'
+  },
+  MenuLink_2: {
+    category: 'hamburger',
+    action: 'click',
+    label: '台灣防疫決策'
+  },
+  MenuLink_3: {
+    category: 'hamburger',
+    action: 'click',
+    label: '圖解病例關係'
+  },
+  MenuLink_4: {
+    category: 'hamburger',
+    action: 'click',
+    label: '致敬防疫英雄'
+  },
+  MenuLink_5: {
+    category: 'hamburger',
+    action: 'click',
+    label: '台灣防疫100天'
+  }
 }
 
 export default gaTable;

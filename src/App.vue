@@ -1,7 +1,49 @@
 <template>
   <div id="app">
     <PageIndicator />
-    <HeaderTypeA></HeaderTypeA>
+    <HeaderTypeA>
+      <a
+        href="https://udn.com/newmedia/2020/covid-19/"
+        target="_blank"
+        rel="noopener"
+        aria-label="outlink"
+        name="outlink"
+        @click="sendGA(formatGA('MenuLink_1'))"
+      >
+        全球疫情地圖
+      </a>      
+      <a
+        href="https://udn.com/newmedia/2020/covid-19-timeline/"
+        target="_blank"
+        rel="noopener"
+        aria-label="outlink"
+        name="outlink"
+        @click="sendGA(formatGA('MenuLink_2'))"
+      >
+        台灣防疫決策
+      </a>
+      <a class="active">圖解病例關係</a>
+      <a
+        href="https://udn.com/newmedia/2020/tribute-covid-19-fighters/"
+        target="_blank"
+        rel="noopener"
+        aria-label="outlink"
+        name="outlink"
+        @click="sendGA(formatGA('MenuLink_4'))"
+      >
+        致敬防疫英雄
+      </a>
+      <a
+        href="https://udn.com/newmedia/taiwan-keeps-covid-19-at-bay/"
+        target="_blank"
+        rel="noopener"
+        aria-label="outlink"
+        name="outlink"
+        @click="sendGA(formatGA('MenuLink_5'))"
+      >
+        台灣防疫100天
+      </a>
+    </HeaderTypeA>
     <PageCover
       :srcMob="require('~/img/cover/mob.jpg')"
       :srcPad="require('~/img/cover/pad.jpg')"
@@ -56,6 +98,8 @@
 <script>
 import InApp from 'detect-inapp';
 
+import { sendGaMethods } from '@/mixins/masterBuilder.js';
+
 import CaseStory from '@/components/CaseStory.vue';
 import HeaderTypeA from '@/components/header/HeaderTypeA.vue';
 import ArticleContainer from '@/components/layout/ArticleContainer.vue';
@@ -71,6 +115,7 @@ import RelatedArticle from '@/components/RelatedArticle.vue';
 
 export default {
   name: 'App',
+  mixins: [sendGaMethods],
   components: {
     CaseStory,
     HeaderTypeA,

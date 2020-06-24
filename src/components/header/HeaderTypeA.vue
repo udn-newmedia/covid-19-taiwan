@@ -1,10 +1,11 @@
 <template>
   <header
     :class="{
-      'header-bar': true,
+      'header-bar': true,      
       'header-bar--hide': !activeFlag,
     }"
   >
+    <HeaderMenu :menuActiveFlag="menuActiveFlag" :simplified="true" ><slot /></HeaderMenu>
     <div class="header-bar__nav__container">
       <nav class="header-bar__nav">
         <div
@@ -34,6 +35,9 @@
             <ShareTwitter />
           </div>
         </div>
+        <div class="header-bar__hamburder-container" @click="handleHamburgerClick">
+          <HeaderHamburger :menuActiveFlag="menuActiveFlag" />
+        </div>
       </nav>
     </div>
   </header>
@@ -46,6 +50,8 @@ import UdnLogo from '@/components/pinhead/UdnLogo.vue';
 import ShareFb from '@/components/pinhead/ShareFb.vue';
 import ShareLine from '@/components/pinhead/ShareLine.vue';
 import ShareTwitter from '@/components/pinhead/ShareTwitter.vue';
+import HeaderHamburger from '@/components/header/HeaderHamburger.vue';
+import HeaderMenu from '@/components/header/HeaderMenu.vue';
 
 export default {
   name: 'HeaderTypeA',
@@ -64,7 +70,9 @@ export default {
     UdnLogo,
     ShareFb,
     ShareLine,
-    ShareTwitter
+    ShareTwitter,
+    HeaderHamburger,
+    HeaderMenu
   },
   data() {
     return {
@@ -158,8 +166,7 @@ export default {
     width: 100px;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    margin-right: 16px;
+    align-items: center;    
     transition: .333s ease-in-out;
     .header-bar-share__share-icon {
       flex-shrink: 0;
