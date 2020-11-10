@@ -7,7 +7,7 @@
     <div class="case-progress__table">
       <div class="case-progress__table__header">
         <div v-if="!$store.state.viewGroup" class="case-progress__table__header__meta">
-          <h3>境內確診<span class="case-progress__table__digit">{{$store.state.caseDataLength}}</span>例<span class="case-progress__table__header__meta__description">(<img :src="require('~/img/hand.svg')" alt="hand"> 點選案例看說明 )</span></h3>
+          <h3>境內確診<span class="case-progress__table__digit">{{$store.state.caseData.confirmed}}</span>例<span class="case-progress__table__header__meta__description">(<img :src="require('~/img/hand.svg')" alt="hand"> 點選案例看說明 )</span></h3>
           <div class="table-legend-container">
             <div class="table-legend">
               <div class="table-legend__color table-legend__color--overseas"></div>

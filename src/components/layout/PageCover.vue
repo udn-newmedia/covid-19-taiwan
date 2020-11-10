@@ -9,7 +9,7 @@
     </div>
     <div v-else class="page-cover__cases-table">
       <div class="page-cover__cases-table__section">
-        <div class="page-cover__cases-table__number page-cover__cases-table__number--case">{{$store.state.caseDataLength || 'loading'}}</div>
+        <div class="page-cover__cases-table__number page-cover__cases-table__number--case">{{$store.state.caseData.confirmed || 'loading'}}</div>
         <div class="page-cover__cases-table__title">台灣確診數</div>
       </div>
       <div class="page-cover__cases-table__section">
