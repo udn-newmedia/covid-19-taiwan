@@ -13,7 +13,7 @@
           @click="sendGA(formatGA('HeaderUdnLogo'))"
         >
           <a
-            href="https://udn.com/news/index"
+            href="https://vip.udn.com/vip/index?from=topic-covid19"
             target="_blank"
             rel="noopener"
             aria-label="聯logo"
