@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
-    "d3": "^5.15.0",
+    "d3": "^7.6.1",
     "detect-inapp": "^1.4.0",
     "es6-promise": "^4.2.8",
     "lodash.debounce": "^4.0.8",
